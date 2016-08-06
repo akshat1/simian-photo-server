@@ -169,7 +169,11 @@
     "comma-style": "error",
     "radix": "error",
     "camelcase": "error",
-    "new-cap": "error"
+    "new-cap": "error",
+    "strict": [
+      "error",
+      "global"
+    ]
   },
 
   "env": {
