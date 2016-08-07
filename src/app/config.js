@@ -18,7 +18,8 @@ const defaultConfig = {
   'web.root': 'client/',
   'web.port': 8080,
   'web.log.level': 'debug',
-  'web.log.filePath': path.join(logDir, 'web.log')
+  'web.log.filePath': path.join(logDir, 'web.log'),
+  'db.location': path.join(process.cwd(), 'db')
 };
 
 nconf
