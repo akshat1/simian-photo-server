@@ -1,35 +1,13 @@
 'use strict';
 
 const graphql = require ('graphql');
+const collectionType = require('./collection-type.js');
 const {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLList,
-  GraphQLString,
   GraphQLInt
 } = graphql;
-
-
-const pictureType = new GraphQLObjectType({
-  name: 'picture',
-  fields: {
-    id: { type: GraphQLInt },
-    thumbnail: { type: GraphQLString },
-    fullSize: { type: GraphQLString },
-    name: { type: GraphQLString },
-    rating: { type: GraphQLInt }
-  }
-});
-
-
-const collectionType = new GraphQLObjectType({
-  name: 'collection',
-  fields: {
-    id: { type: GraphQLInt },
-    name: { type: GraphQLString },
-    pictures: { type: new GraphQLList(pictureType) }
-  }
-});
 
 
 const schema = new GraphQLSchema({
