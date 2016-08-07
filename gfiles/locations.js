@@ -24,7 +24,7 @@ const Locations = {
 
     html: {
       src: 'src/client/html/**/*.html',
-      dest: 'client/html'
+      dest: 'client/'
     },
     resources: {
       src: 'src/client/resources/**/*',

@@ -4,6 +4,7 @@ const gulp = require('gulp');
 const postCSS = require('gulp-postcss');
 const concat = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
+const Locations = require('./locations.js');
 
 const FILE_SEPARATOR = '\n\n/* **** **** **** **** **** **** **** **** **** **** **** **** **** */\n\n';
 
@@ -30,3 +31,6 @@ gulp.task('lib-css', function() {
     }))
     .pipe(gulp.dest(Locations.client.css.dest));
 });
+
+
+gulp.task('style', ['lib-css', 'css']);

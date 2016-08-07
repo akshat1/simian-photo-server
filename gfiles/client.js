@@ -8,14 +8,17 @@ const Locations = require('./locations.js');
 
 
 gulp.task('resources', function() {
-  return gulp.src(Locations.resources.src)
-    .pipe(changed(Locations.resources.dest))
-    .pipe(gulp.dest(Locations.resources.dest));
+  return gulp.src(Locations.client.resources.src)
+    .pipe(changed(Locations.client.resources.dest))
+    .pipe(gulp.dest(Locations.client.resources.dest));
 });
 
 
 gulp.task('html', function() {
-  return gulp.src(Locations.html.src)
-    .pipe(changed(Locations.html.dest))
-    .pipe(gulp.dest(Locations.html.dest));
+  return gulp.src(Locations.client.html.src)
+    .pipe(changed(Locations.client.html.dest))
+    .pipe(gulp.dest(Locations.client.html.dest));
 });
+
+
+gulp.task('build-client', ['build-client-js', 'html', 'resources', 'style']);

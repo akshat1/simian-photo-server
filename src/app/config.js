@@ -11,11 +11,14 @@ const nconf = require('nconf');
 const path = require('path');
 
 const configFilePath = path.join(process.cwd(), 'config.json');
+const logDir = path.join(process.cwd(), 'log');
 const defaultConfig = {
   'log.level': 'debug',
-  'log.filePath': path.join(process.cwd(), 'log', 'sps.log'),
+  'log.filePath': path.join(logDir, 'sps.log'),
   'web.root': 'client/',
-  'web.port': 8080
+  'web.port': 8080,
+  'web.log.level': 'debug',
+  'web.log.filePath': path.join(logDir, 'web.log')
 };
 
 nconf

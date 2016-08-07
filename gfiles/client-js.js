@@ -9,7 +9,7 @@ const istanbul = require('gulp-istanbul');
 const Locations = require('./locations.js');
 
 
-gulp.task('instrument-client', function() {
+gulp.task('instrument-client-js', function() {
   gulp.src(Locations.client.js.src)
     .pipe(istanbul({
       includeUntested: true
@@ -18,7 +18,7 @@ gulp.task('instrument-client', function() {
 });
 
 
-gulp.task('test-client', ['instrument-client'], function() {
+gulp.task('test-client-js', ['instrument-client-js'], function() {
     return gulp.src(Locations.client.js.test)
       .pipe(mocha())
       .pipe(istanbul.writeReports({
@@ -32,7 +32,7 @@ gulp.task('test-client', ['instrument-client'], function() {
 });
 
 
-gulp.task('lint-client', function() {
+gulp.task('lint-client-js', function() {
   return gulp.src(Locations.client.js.src)
     .pipe(eslint())
     .pipe(eslint.format())
@@ -40,7 +40,7 @@ gulp.task('lint-client', function() {
 });
 
 
-gulp.task('build-client', ['lint-client'], function() {
+gulp.task('build-client-js', ['lint-client-js'], function() {
   return gulp.src(Locations.client.js.src)
     .pipe(sourcemaps.init())
     .pipe(babel())
