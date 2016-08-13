@@ -6,14 +6,14 @@ const {
   GraphQLObjectType,
   GraphQLList,
   GraphQLString,
-  GraphQLInt
+  GraphQLID
 } = graphql;
 
 
 const collectionType = new GraphQLObjectType({
   name: 'collection',
   fields: {
-    id: { type: GraphQLInt },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     pictures: { type: new GraphQLList(pictureType) }
   }

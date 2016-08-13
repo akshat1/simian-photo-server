@@ -1,7 +1,7 @@
 'use strict';
 
-const winston = require('winston');
 const config = require('./config.js');
+const logger = require('./logger.js')(config('web.log.level'), config('web.log.filePath'));
 //const fs = require('fs-extra');
 const path = require('path');
 const express = require('express');
@@ -10,21 +10,6 @@ const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
 const graphQlSchema = require('./graphql/schema.js');
 //const mime = require('mime');
-
-const logger = new winston.Logger({
-  transports: [
-    new winston.transports.Console({
-      level: config('web.log.level'),
-      colorize: true
-    }),
-
-    new winston.transports.File({
-      level: config('web.log.level'),
-      filename: config('web.log.filePath')
-    })
-  ]
-});
-
 
 const app = express();
 function setUp() {

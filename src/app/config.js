@@ -11,6 +11,7 @@ const nconf = require('nconf');
 const path = require('path');
 
 const configFilePath = path.join(process.cwd(), 'config.json');
+console.log('Load ', configFilePath);
 const logDir = path.join(process.cwd(), 'log');
 const defaultConfig = {
   'log.level': 'debug',
@@ -18,7 +19,13 @@ const defaultConfig = {
   'web.root': 'client/',
   'web.port': 8080,
   'web.log.level': 'debug',
-  'web.log.filePath': path.join(logDir, 'web.log')
+  'web.log.filePath': path.join(logDir, 'web.log'),
+  'db.log.level': 'debug',
+  'db.log.filePath': path.join(logDir, 'db.log'),
+  'db.location': path.join(process.cwd(), 'db'),
+  'crawler.log.level': 'debug',
+  'crawler.log.filePath': path.join(logDir, 'crawler.log'),
+  directories: []
 };
 
 nconf
