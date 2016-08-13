@@ -1,28 +1,11 @@
 'use strict';
 
-const winston = require('winston');
 const config = require('./config.js');
-const fs = require('fs-extra');
-const path = require('path');
+const logger = require('./logger.js')(config('log.level'), config('log.filePath'));
 const webServer = require('./web-server.js');
-
-fs.ensureDirSync(path.dirname(config('log.filePath')));
-
-const logger = new winston.Logger({
-  transports: [
-    new winston.transports.Console({
-      level: config('log.level'),
-      colorize: true
-    }),
-
-    new winston.transports.File({
-      level: config('log.level'),
-      filename: config('log.filePath')
-    })
-  ]
-});
-
+const crawler = require('./crawler/ipc-server.js');
 
 logger.info('simian Photo Server start');
 logger.info('starting web-server');
+crawler.start();
 webServer.start();

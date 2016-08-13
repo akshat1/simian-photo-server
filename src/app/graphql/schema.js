@@ -7,7 +7,7 @@ const {
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLList,
-  GraphQLInt
+  GraphQLID
 } = graphql;
 
 
@@ -22,10 +22,10 @@ const schema = new GraphQLSchema({
 
       collection: {
         args: {
-          id: { type: GraphQLInt }
+          id: { type: GraphQLID },
         },
         type: collectionType,
-        resolve: db.getCollection
+        resolve: (rootValue, args) => db.getCollection(args)
       }
     }
   })

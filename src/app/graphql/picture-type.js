@@ -4,14 +4,15 @@ const graphql = require ('graphql');
 const {
   GraphQLObjectType,
   GraphQLString,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLID
 } = graphql;
 
 
 const pictureType = new GraphQLObjectType({
   name: 'picture',
   fields: {
-    id: { type: GraphQLInt },
+    id: { type: GraphQLID },
     thumbnail: { type: GraphQLString },
     fullSize: { type: GraphQLString },
     name: { type: GraphQLString },
