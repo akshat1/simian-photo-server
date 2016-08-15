@@ -14,7 +14,7 @@ gulp.task('css', function() {
     .pipe(sourcemaps.init())
     .pipe(postCSS([
       require('postcss-import'),
-      require('postcss-mixins')(require('../postcss/mixins.js')),
+      require('postcss-mixins')(require('../postcss/mixins/index.js')),
       require('postcss-simple-vars'),
       require('postcss-nested'),
       (require('postcss-functions')(require('../postcss/functions.js')))

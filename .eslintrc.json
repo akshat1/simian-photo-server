@@ -175,7 +175,10 @@
     "strict": [
       "error",
       "global"
-    ]
+    ],
+
+    "react/jsx-uses-react": "warn",
+    "react/jsx-uses-vars": "warn"
   },
 
   "env": {
@@ -193,5 +196,20 @@
 
   "plugins": [
     "react"
-  ]
+  ],
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "classes": true
+    },
+    "sourceType": "script"
+  },
+
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  }
 }

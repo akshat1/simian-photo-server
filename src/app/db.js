@@ -19,34 +19,6 @@ const colCollections = db.collection('collections');
 const colPictures = db.collection('pictures');
 
 
-/* Dummy Stuff */
-function makePicture() {
-  const stub = String(Date.now()).substr(-4);
-  return {
-    id: stub,
-    name: `Pic-${stub}`,
-    rating: Math.ceil(Math.random() * 5),
-    fullSize: `fs-${stub}`,
-    thumbnail: `tn-${stub}`
-  };
-}
-
-
-function makeCollection() {
-  const stub = String(Date.now()).substr(-4);
-  const numPictures = Math.ceil(10 * Math.random());
-  const pictures = [];
-  for (let i = 0; i < numPictures; i++)
-    pictures.push(makePicture());
-
-  return {
-    id: stub,
-    name: `Col-${stub}`,
-    pictures
-  };
-}
-
-
 function getCollection(args) {
   logger.debug('getCollection: ', args);
   const queryParams = _.merge({}, args);
@@ -68,17 +40,7 @@ function getCollection(args) {
 function getCollections() {
   return colCollections
     .find({})
-    .toArray()
-    .then(function (collections) {
-      return Promise.all(collections.map(function (collection) {
-        return getPictures({
-          collections: [collection.id]
-        }).then(function (pictures) {
-          collection.pictures = pictures;
-          return collection;
-        });
-      }));
-    });
+    .toArray();
 }
 
 
@@ -89,7 +51,6 @@ function getPictures(args = {}) {
     query['collections'] = {
       $in: args.collections
     };
-  console.log('query: ', query);
   return colPictures.find(query).toArray();
 }
 
@@ -104,55 +65,33 @@ function upsertFile(file) {
       const fileDoc = {
         path: filePath,
         id: hashes.JSHash(filePath),
-        collections: collection.id,
+        collections: [collection.id],
         name: Path.basename(filePath),
         rating: 5,
         fullSize: 'foo',
         thumbnail: 'bar'
       };
 
-      return new Promise(function (resolve, reject) {
-        colPictures.update({
-          id: fileDoc.id
-        }, fileDoc, {
-          upsert: true
-        }, err => {
-          if (err)
-            reject(err);
-          else
-            resolve(fileDoc);
-        });
-      });
+      return colPictures.update({ id: fileDoc.id }, fileDoc, { upsert: true });
     });
 }
 
 
 function upsertDirectory(dirPath) {
-  return new Promise(function (resolve, reject) {
-    const dirColDoc = {
-      type: 'directory',
-      id: hashes.JSHash(dirPath),
-      path: dirPath,
-      name: Path.basename(dirPath),
-      pictures: []
-    };
-    colCollections.update({
-      id: dirColDoc.id
-    }, dirColDoc, {
-      upsert: true
-    }, err => {
-      if (err)
-        reject(err);
-      else
-        resolve(dirColDoc);
+  const dirColDoc = {
+    type: 'directory',
+    id: hashes.JSHash(dirPath),
+    path: dirPath,
+    name: Path.basename(dirPath)
+  };
+  return colCollections.update({ id: dirColDoc.id }, dirColDoc, { upsert: true })
+    .then(function () {
+      return dirColDoc;
     });
-  });
 }
 
 
 module.exports = {
-  makePicture,
-  makeCollection,
   getPictures,
   getCollection,
   getCollections,

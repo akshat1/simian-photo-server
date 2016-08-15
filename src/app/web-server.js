@@ -5,13 +5,33 @@ const logger = require('./logger.js')(config('web.log.level'), config('web.log.f
 //const fs = require('fs-extra');
 const path = require('path');
 const express = require('express');
-const graphqlHTTP = require('express-graphql');
 const bodyParser = require('body-parser');
 const serveStatic = require('serve-static');
-const graphQlSchema = require('./graphql/schema.js');
+const db = require('./db.js');
 //const mime = require('mime');
 
 const app = express();
+
+function promiseToApi(fn) {
+  return function (request, response) {
+    fn(request.params)
+      .then(function (result) {
+        console.log('sending response!');
+        response.json(result);
+      })
+      .catch(response.send);
+  };
+}
+
+
+function getApiRouter() {
+  const api = express.Router();
+  api.get('/collections', promiseToApi(db.getCollections));
+  api.get('/collections/:id', promiseToApi(db.getCollection));
+  return api;
+}
+
+
 function setUp() {
   logger.debug('setUp');
   // parse json requests
@@ -21,15 +41,7 @@ function setUp() {
   const webRoot = path.join(process.cwd(), config('web.root'));
   logger.info('webRoot: ', webRoot);
   app.use('/', serveStatic(webRoot));
-  app.use('/graphql', graphqlHTTP({
-    schema: graphQlSchema,
-    graphiql: true,
-    formatError: error => ({
-      message: error.message,
-      locations: error.locations,
-      stack: error.stack
-    })
-  }));
+  app.use('/api', getApiRouter());
 }
 
 

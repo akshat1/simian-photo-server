@@ -2,10 +2,12 @@
 
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
-const sourcemaps = require('gulp-sourcemaps');
-const babel = require('gulp-babel');
 const mocha = require('gulp-mocha');
 const istanbul = require('gulp-istanbul');
+const browserify = require('browserify');
+const babelify = require('babelify');
+const fs = require('fs-extra');
+const path = require('path');
 const Locations = require('./locations.js');
 
 
@@ -41,9 +43,11 @@ gulp.task('lint-client-js', function() {
 
 
 gulp.task('build-client-js', ['lint-client-js'], function() {
-  return gulp.src(Locations.client.js.src)
-    .pipe(sourcemaps.init())
-    .pipe(babel())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(Locations.client.js.dest));
+  fs.ensureDirSync(path.dirname(Locations.client.js.dest));
+  return browserify(Locations.client.js.entry, {
+      debug: true
+    })
+    .transform(babelify.configure())
+    .bundle()
+    .pipe(fs.createWriteStream(Locations.client.js.dest));
 });

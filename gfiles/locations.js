@@ -10,8 +10,9 @@ const Locations = {
 
   client: {
     js: {
-      src: 'src/client/js/**/*.js',
-      dest: 'client/js',
+      src: ['src/client/js/**/*.js', 'src/client/js/**/*.jsx'],
+      entry: './src/client/js/index.jsx',
+      dest: './client/js/app.js',
       coverage: 'coverage/client',
       test: 'test/client/**/*.js'
     },
