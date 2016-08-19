@@ -5,10 +5,13 @@ const Collection = require('../components/Collection.jsx');
 
 
 function mapStateToProps(state) {
-  return {
+  const result = {
+    selectedPicture: state.selectedPicture,
     collection: state.selectedCollection,
     isFetchingCollection: state.isFetchingSelectedCollection
   };
+  console.log('result is ', result);
+  return result;
 }
 
 

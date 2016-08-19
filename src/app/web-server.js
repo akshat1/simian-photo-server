@@ -28,6 +28,7 @@ function getApiRouter() {
   const api = express.Router();
   api.get('/collections', promiseToApi(db.getCollections));
   api.get('/collections/:id', promiseToApi(db.getCollection));
+  api.get('/pictures/:id', promiseToApi(db.getPicture));
   return api;
 }
 

@@ -3,6 +3,8 @@
 module.exports = {
   isFetchingCollections: false,
   isFetchingSelectedCollection: false,
+  isFetchingSelectedPicture: false,
   collections: [],
-  selectedCollection: null
+  selectedCollection: null,
+  selectedPicture: null
 };

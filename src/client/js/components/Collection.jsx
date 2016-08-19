@@ -2,12 +2,14 @@
 
 const React = require('react');
 const { PropTypes } = React;
-const Thumbnail = require('./Thumbnail.jsx');
+const Thumbnail = require('../containers/Thumbnail.js');
+const Picture = require('./Picture.jsx');
 
 class Collection extends React.Component {
   static className = {
     root: 'sps-collection',
-    thumbnailContainer: 'sps-thumbnail-container'
+    thumbnailContainer: 'sps-thumbnail-container',
+    pictureContainer: 'sps-picture-container'
   };
 
 
@@ -18,12 +20,35 @@ class Collection extends React.Component {
       name: PropTypes.string.isRequired,
       path: PropTypes.string,
       type: PropTypes.string.isRequired
+    }),
+    selectedPicture: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      collections: PropTypes.arrayOf(PropTypes.string.isRequired),
+      name: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+      fullSize: PropTypes.string.isRequired,
+      thumbnail: PropTypes.string.isRequired
     })
   }
 
 
   renderEmpty() {
     return 'Select A Collection From the Left by Clicking On It';
+  }
+
+
+  renderSelectedPicture() {
+    const { selectedPicture } = this.props;
+    if (selectedPicture) {
+      return (
+        <div
+          className = {Collection.className.pictureContainer}
+          key = 'sps-picture-container'
+          >
+          <Picture picture = {selectedPicture}/>
+        </div>
+      );
+    }
   }
 
 
@@ -38,7 +63,10 @@ class Collection extends React.Component {
     });
 
     return (
-      <div className = {Collection.className.thumbnailContainer}>
+      <div
+        className = {Collection.className.thumbnailContainer}
+        key = 'sps-thumbnail-container'
+        >
         {thumbnails}
       </div>
     );
@@ -46,7 +74,10 @@ class Collection extends React.Component {
 
 
   renderNonEmpty() {
-    return this.renderThumbnails();
+    return [
+      this.renderSelectedPicture(),
+      this.renderThumbnails()
+    ];
   }
 
 

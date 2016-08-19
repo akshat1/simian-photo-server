@@ -37,6 +37,23 @@ function getCollection(args) {
 }
 
 
+function getPicture({ id }) {
+  logger.debug('getPicture: ', id);
+  const queryParams = {
+    id: Number(id)
+  };
+  console.log(queryParams);
+
+  return colPictures
+    .find(queryParams)
+    .toArray()
+    .then(function (pictures) {
+      console.log(pictures);
+      return pictures[0];
+    });
+}
+
+
 function getCollections() {
   return colCollections
     .find({})
@@ -92,6 +109,7 @@ function upsertDirectory(dirPath) {
 
 
 module.exports = {
+  getPicture,
   getPictures,
   getCollection,
   getCollections,

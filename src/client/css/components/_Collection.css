@@ -1,0 +1,17 @@
+.sps-collection {
+  @mixin flexItem 1, 1;
+  @mixin flexBox column, nowrap, flex-start, stretch;
+}
+
+
+.sps-thumbnail-container {
+  @mixin flexItem 1, 1;
+  padding: $padding-s;
+  overflow: auto;
+}
+
+
+.sps-picture-container {
+  @mixin flexItem 0, 0;
+  height: 500px;
+}

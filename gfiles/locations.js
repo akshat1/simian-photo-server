@@ -18,7 +18,7 @@ const Locations = {
     },
 
     css: {
-      src: 'src/client/css/**/*.css',
+      src: ['src/client/css/**/*.css', '!src/client/css/**/_*.css'],
       lib: 'src/client/lib/**/*.css',
       dest: 'client/css'
     },
