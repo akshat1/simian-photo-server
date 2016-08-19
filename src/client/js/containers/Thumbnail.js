@@ -2,13 +2,19 @@
 
 const { connect } = require('react-redux');
 const Thumbnail = require('../components/Thumbnail.jsx');
+const { selectPicture } = require('../actions');
 
 
-function mapStateToProps(state) {
+function mapStateToProps() {
+  return {};
+}
+
+
+function mapDispatchToProps(dispatch, ownProps) {
   return {
-    thumbnail: state.thumbnail
+    onClick: () => dispatch(selectPicture(ownProps.thumbnail.id))
   };
 }
 
 
-module.exports = connect(mapStateToProps)(Thumbnail);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Thumbnail);

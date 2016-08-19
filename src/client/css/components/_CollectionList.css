@@ -1,0 +1,7 @@
+.sps-collections-list {
+  @mixin flexItem 0, 0;
+  width: 19.23vw;
+  border-right: 1px solid $border-color;
+  padding: $padding-s;
+  overflow: auto;
+}

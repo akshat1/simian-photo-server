@@ -1,0 +1,7 @@
+.sps-toolbar {
+  @mixin flexItem 0, 0;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid $border-color;
+  padding: 0 $padding-s;
+}

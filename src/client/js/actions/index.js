@@ -17,6 +17,8 @@ const REQUEST_COLLECTIONS = 'REQUEST_COLLECTIONS';
 const RECEIVE_COLLECTIONS = 'RECEIVE_COLLECTIONS';
 const REQUEST_SELECTED_COLLECTION = 'REQUEST_SELECTED_COLLECTION';
 const RECEIVE_SELECTED_COLLECTION = 'RECEIVE_SELECTED_COLLECTION';
+const REQUEST_SELECTED_PICTURE = 'REQUEST_SELECTED_PICTURE';
+const RECEIVE_SELECTED_PICTURE = 'RECEIVE_SELECTED_PICTURE';
 
 
 function responseToJSON(response) {
@@ -54,6 +56,21 @@ function receiveSelectedCollection(json) {
 }
 
 
+function requestSelectedPicture() {
+  return {
+    type: REQUEST_SELECTED_PICTURE
+  };
+}
+
+
+function receiveSelectedPicture(json) {
+  return {
+    type: RECEIVE_SELECTED_PICTURE,
+    selectedPicture: json
+  };
+}
+
+
 function fetchCollections() {
   return function (dispatch) {
     dispatch(requestCollections());
@@ -78,15 +95,30 @@ function selectCollection(collectionId) {
 }
 
 
+function selectPicture(pictureId) {
+  return function (dispatch) {
+    dispatch(requestSelectedPicture());
+    return fetch(`/api/pictures/${pictureId}`)
+      .then(responseToJSON)
+      .then(function (json) {
+        dispatch(receiveSelectedPicture(json));
+      });
+  };
+}
+
+
 module.exports = {
   REQUEST_COLLECTIONS,
   RECEIVE_COLLECTIONS,
   REQUEST_SELECTED_COLLECTION,
   RECEIVE_SELECTED_COLLECTION,
+  REQUEST_SELECTED_PICTURE,
+  RECEIVE_SELECTED_PICTURE,
   requestCollections,
   receiveCollections,
   requestSelectedCollection,
   receiveSelectedCollection,
   selectCollection,
+  selectPicture,
   fetchCollections
 };

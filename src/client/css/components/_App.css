@@ -1,0 +1,10 @@
+.sps-app {
+  @mixin position absolute, 0, 0, 0, 0;
+  @mixin flexBox column, nowrap, flex-start, stretch, space-between;
+
+  .sps-mid {
+    @mixin flexItem 1, 1;
+    @mixin flexBox row, nowrap, flex-start, stretch;
+    min-height: 200px;
+  }
+}

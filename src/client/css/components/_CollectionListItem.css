@@ -1,0 +1,3 @@
+.sps-collections-list-item {
+  @mixin textOverflow ellipsis;
+}

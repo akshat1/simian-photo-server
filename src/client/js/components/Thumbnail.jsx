@@ -12,7 +12,8 @@ class Thumbnail extends React.Component {
       name: PropTypes.string.isRequired,
       path: PropTypes.string,
       rating: PropTypes.number.isRequired
-    }).isRequired
+    }).isRequired,
+    onClick: PropTypes.func.isRequired
   }
 
 
@@ -22,9 +23,15 @@ class Thumbnail extends React.Component {
 
 
   render() {
-    const { thumbnail } = this.props;
+    const {
+      thumbnail,
+      onClick
+    } = this.props;
+
     return (
-      <div className = {Thumbnail.className.root}>
+      <div
+        className = {Thumbnail.className.root}
+        onClick = {onClick}>
         {thumbnail.name}
       </div>
     );
