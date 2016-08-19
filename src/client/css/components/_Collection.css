@@ -1,17 +1,33 @@
 .sps-collection {
   @mixin flexItem 1, 1;
   @mixin flexBox column, nowrap, flex-start, stretch;
-}
 
 
-.sps-thumbnail-container {
-  @mixin flexItem 1, 1;
-  padding: $padding-s;
-  overflow: auto;
-}
+  .sps-thumbnail-container {
+    @mixin flexItem 1, 1;
+    padding: $padding-s;
+    overflow: auto;
+    background: #E0E0E0;
 
 
-.sps-picture-container {
-  @mixin flexItem 0, 0;
-  height: 500px;
+    &.mini {
+      /* TODO: get an expression calculation for postcss */
+      /* 4 * $padding-s + $thumbnail-height; */
+      @mixin flexItem 0, 0;
+      height: 170px;
+    }
+  }
+
+
+  .sps-picture-container {
+    @mixin flexItem 1, 1;
+    padding: $padding-m;
+    border-bottom: 1px solid $border-color;
+    position: relative;
+  }
+
+
+  .sps-picture {
+    @mixin position absolute, 10px, 10px, 10px, 10px;
+  }
 }

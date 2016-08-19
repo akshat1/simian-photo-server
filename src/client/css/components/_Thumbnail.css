@@ -1,6 +1,6 @@
 .sps-thumbnail {
-  width: 150px;
-  height: 150px;
+  width: $thumbnail-width;
+  height: $thumbnail-height;
   display: inline-block;
   background: orange;
   margin: $padding-s;

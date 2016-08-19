@@ -8,7 +8,7 @@ const Picture = require('./Picture.jsx');
 class Collection extends React.Component {
   static className = {
     root: 'sps-collection',
-    thumbnailContainer: 'sps-thumbnail-container',
+    thumbnailContainer: (hasSelection => `sps-thumbnail-container ${hasSelection ? 'mini' : ''}`),
     pictureContainer: 'sps-picture-container'
   };
 
@@ -64,7 +64,7 @@ class Collection extends React.Component {
 
     return (
       <div
-        className = {Collection.className.thumbnailContainer}
+        className = {Collection.className.thumbnailContainer(!!this.props.selectedPicture)}
         key = 'sps-thumbnail-container'
         >
         {thumbnails}
