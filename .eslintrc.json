@@ -141,11 +141,6 @@
     "newline-per-chained-call": "error",
     "eol-last": "error",
     "no-whitespace-before-property": "error",
-    "padded-blocks": [
-      "error",
-      "never"
-    ],
-
     "space-in-parens": [
       "error", "never"
     ],

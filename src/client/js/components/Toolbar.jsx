@@ -7,13 +7,15 @@ class Toolbar extends React.Component {
     root: 'sps-toolbar'
   };
 
+
   render() {
     return (
       <div className = {Toolbar.className.root}>
-        Toolbar
+        Simian Picture Server
       </div>
     );
   }
 }
+
 
 module.exports = Toolbar;

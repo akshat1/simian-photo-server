@@ -2,8 +2,8 @@
 
 const React = require('react');
 const Toolbar = require('./Toolbar.jsx');
-const CollectionsList = require('./CollectionsList.jsx');
-const Collection = require('./Collection.jsx');
+const CollectionsList = require('../containers/CollectionsList.js');
+const Collection = require('../containers/Collection.js');
 
 class App extends React.Component {
   static className = {
