@@ -2,7 +2,7 @@
   width: $thumbnail-width;
   height: $thumbnail-height;
   display: inline-block;
-  background: #EEE;
+  background: $gray-1;
   border: 1px solid $border-color;
   margin: $padding-s;
   position: relative;
@@ -21,7 +21,7 @@
     @mixin textOverflow;
     height: 50px;
     line-height: 50px;
-    background: #FFF;
+    background: $gray-0;
     padding: 0 $padding-m;
   }
 }

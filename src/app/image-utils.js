@@ -4,16 +4,18 @@
 const cProcess = require('child_process');
 const fs = require('fs-extra');
 const Path = require('path');
-const numCPUs = require('os').cpus().length;
-const MAX_THREADS = Math.max(numCPUs - 4, 1);
+//const numCPUs = require('os').cpus().length;
+//const MAX_THREADS = Math.max(numCPUs - 4, 1);
 
 
 function getEnvironment(opts = {}) {
+  /*
   const env = Object.assign({
     MAGICK_THREAD_LIMIT: MAX_THREADS,
     MAGICK_THROTTLE: 100
   }, opts);
   return env;
+  */
 }
 
 

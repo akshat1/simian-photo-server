@@ -2,11 +2,14 @@
 
 const React = require('react');
 const { PropTypes } = React;
+const SplitPane = require('./SplitPane.jsx');
+const _ = require('lodash');
 
 
 class Picture extends React.Component {
   static className = {
-    root: 'sps-picture'
+    root: 'sps-picture',
+    metadata: 'sps-picture-metadata'
   }
 
 
@@ -30,11 +33,35 @@ class Picture extends React.Component {
   }
 
 
+  renderMetadata() {
+    const rows = _.map(this.props.picture.metadata, function (value, key) {
+      return (
+        <tr key={key}>
+          <td>{key}</td>
+          <td>{value}</td>
+        </tr>
+      );
+    });
+    return (
+      <div className={Picture.className.metadata}>
+        <table>
+          <tbody>
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+
   render() {
     console.log(this.props);
     return (
       <div className = {Picture.className.root}>
-        {this.renderPreview()}
+        <SplitPane direction = 'horizontal' className = 'sps-picture-split-pane'>
+          {this.renderPreview()}
+          {this.renderMetadata()}
+        </SplitPane>
       </div>
     );
   }
