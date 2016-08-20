@@ -2,6 +2,26 @@
   width: $thumbnail-width;
   height: $thumbnail-height;
   display: inline-block;
-  background: orange;
+  background: #EEE;
+  border: 1px solid $border-color;
   margin: $padding-s;
+  position: relative;
+
+
+  .sps-thumbnail-image {
+    @mixin position absolute, 0, 0, auto, 0;
+    height: 100px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+
+  .sps-thumbnail-label {
+    @mixin position absolute, auto, 0, 0, 0;
+    @mixin textOverflow;
+    height: 50px;
+    line-height: 50px;
+    background: #FFF;
+    padding: 0 $padding-m;
+  }
 }

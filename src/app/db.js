@@ -75,7 +75,12 @@ function getPictures(args = {}) {
 function upsertFile(file) {
   // TODO: Versioned upsert instead of overwrite
   logger.debug('upsertFile', file);
-  const filePath = file.path;
+  const {
+    path: filePath,
+    thumbnail,
+    preview,
+    metadata
+  } = file;
   const directory = Path.dirname(filePath);
   return upsertDirectory(directory)
     .then(function (collection) {
@@ -84,9 +89,10 @@ function upsertFile(file) {
         id: hashes.JSHash(filePath),
         collections: [collection.id],
         name: Path.basename(filePath),
-        rating: 5,
-        fullSize: 'foo',
-        thumbnail: 'bar'
+        rating: 0,
+        preview,
+        thumbnail,
+        metadata
       };
 
       return colPictures.update({ id: fileDoc.id }, fileDoc, { upsert: true });

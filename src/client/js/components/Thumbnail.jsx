@@ -18,8 +18,28 @@ class Thumbnail extends React.Component {
 
 
   static className = {
-    root: 'sps-thumbnail'
+    root: 'sps-thumbnail',
+    label: 'sps-thumbnail-label'
   };
+
+
+  renderThumbnail() {
+    const thumbnail = this.props.thumbnail;
+    return (
+      <div className='sps-thumbnail-image'>
+        <img src = {`/thumbnail/${thumbnail.thumbnail}`} />
+      </div>
+    );
+  }
+
+
+  renderLabel() {
+    return (
+      <div className = {Thumbnail.className.label}>
+        {this.props.thumbnail.name}
+      </div>
+    );
+  }
 
 
   render() {
@@ -31,8 +51,11 @@ class Thumbnail extends React.Component {
     return (
       <div
         className = {Thumbnail.className.root}
-        onClick = {onClick}>
-        {thumbnail.name}
+        onClick = {onClick}
+        title = {thumbnail.name}
+        >
+        {this.renderThumbnail()}
+        {this.renderLabel()}
       </div>
     );
   }

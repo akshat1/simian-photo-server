@@ -16,17 +16,25 @@ class Picture extends React.Component {
       collections: PropTypes.arrayOf(PropTypes.number.isRequired),
       name: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-      fullSize: PropTypes.string.isRequired,
+      preview: PropTypes.string.isRequired,
       thumbnail: PropTypes.string.isRequired
     }).isRequired
   };
+
+
+  renderPreview() {
+    const picture = this.props.picture;
+    return (
+      <img src = {`/preview/${picture.preview}`} />
+    );
+  }
 
 
   render() {
     console.log(this.props);
     return (
       <div className = {Picture.className.root}>
-        {this.props.picture.name}
+        {this.renderPreview()}
       </div>
     );
   }

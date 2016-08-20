@@ -23,11 +23,12 @@ class Collection extends React.Component {
     }),
     selectedPicture: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      collections: PropTypes.arrayOf(PropTypes.string.isRequired),
+      collections: PropTypes.arrayOf(PropTypes.number.isRequired),
       name: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-      fullSize: PropTypes.string.isRequired,
-      thumbnail: PropTypes.string.isRequired
+      preview: PropTypes.string.isRequired,
+      thumbnail: PropTypes.string.isRequired,
+      metadata: PropTypes.object
     })
   }
 

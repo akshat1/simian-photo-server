@@ -25,6 +25,14 @@ const defaultConfig = {
   'db.location': path.join(process.cwd(), 'db'),
   'crawler.log.level': 'debug',
   'crawler.log.filePath': path.join(logDir, 'crawler.log'),
+  'adapters.log.level': 'debug',
+  'adapters.log.filePath': path.join(logDir, 'adapters.log'),
+  'adapters.thumbnail.location': path.join(process.cwd(), 'image-cache', 'thumbnails'),
+  'adapters.preview.location': path.join(process.cwd(), 'image-cache', 'preview'),
+  'thumbnail.height': 150,
+  'thumbnail.width': 150,
+  'preview.height': 600,
+  'preview.width': 800,
   directories: []
 };
 
