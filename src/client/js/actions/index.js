@@ -96,10 +96,6 @@ function selectCollection(collectionId) {
       .then(function (json) {
         dispatch(receiveSelectedCollection(json));
         return json;
-      })
-      .then(function (collection) {
-        if (collection && collection.pictures[0])
-          dispatch(selectPicture(collection.pictures[0].id));
       });
   };
 }
