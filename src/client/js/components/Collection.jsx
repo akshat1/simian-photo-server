@@ -4,12 +4,13 @@ const React = require('react');
 const { PropTypes } = React;
 const Thumbnail = require('../containers/Thumbnail.js');
 const Picture = require('./Picture.jsx');
+const SplitPane = require('./SplitPane.jsx');
 
 class Collection extends React.Component {
   static className = {
     root: 'sps-collection',
     thumbnailContainer: (hasSelection => `sps-thumbnail-container ${hasSelection ? 'mini' : ''}`),
-    pictureContainer: 'sps-picture-container'
+    splitPane: 'sps-collection-split-pane'
   };
 
 
@@ -23,11 +24,12 @@ class Collection extends React.Component {
     }),
     selectedPicture: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      collections: PropTypes.arrayOf(PropTypes.string.isRequired),
+      collections: PropTypes.arrayOf(PropTypes.number.isRequired),
       name: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-      fullSize: PropTypes.string.isRequired,
-      thumbnail: PropTypes.string.isRequired
+      preview: PropTypes.string.isRequired,
+      thumbnail: PropTypes.string.isRequired,
+      metadata: PropTypes.object
     })
   }
 
@@ -41,12 +43,7 @@ class Collection extends React.Component {
     const { selectedPicture } = this.props;
     if (selectedPicture) {
       return (
-        <div
-          className = {Collection.className.pictureContainer}
-          key = 'sps-picture-container'
-          >
-          <Picture picture = {selectedPicture}/>
-        </div>
+        <Picture picture = {selectedPicture}/>
       );
     }
   }
@@ -74,10 +71,16 @@ class Collection extends React.Component {
 
 
   renderNonEmpty() {
-    return [
-      this.renderSelectedPicture(),
-      this.renderThumbnails()
-    ];
+    if (this.props.selectedPicture)
+      return (
+        <SplitPane direction = 'vertical' className = {Collection.className.splitPane}>
+          {this.renderSelectedPicture()}
+          {this.renderThumbnails()}
+        </SplitPane>
+      );
+
+    else
+      return this.renderThumbnails();
   }
 
 

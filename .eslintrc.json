@@ -62,7 +62,7 @@
 
     "no-useless-escape": "error",
     "func-style": [
-      "error",
+      "warn",
       "declaration"
     ],
 
@@ -123,6 +123,7 @@
     "no-case-declarations": "error",
     "no-undef": "error",
     "one-var": ["error", "never"],
+    "no-unused-vars": "warn",
     "no-nested-ternary": "error",
     "no-unneeded-ternary": [
       "error",

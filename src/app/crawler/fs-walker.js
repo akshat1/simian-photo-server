@@ -17,6 +17,8 @@ const IPCConfig = {
   colorize: true
 };
 
+const MAX_PATHS_IN_FLIHT = 4;
+
 
 /* ********************************************************************************************* */
 const scanQueue = [];
@@ -42,18 +44,34 @@ function qPop() {
 }
 
 
+let currentInFlight = 0;
 function processQueue() {
-  logger.debug('processQueue');
+  logger.debug(`processQueue. currentInFlight: ${currentInFlight}`);
+
+  function next() {
+    currentInFlight--;
+    logger.debug(`End proc. currentInFlight: ${currentInFlight}`);
+    processQueue();
+  }
+
   if (scanQueue.length) {
+    if (currentInFlight > MAX_PATHS_IN_FLIHT) {
+      logger.debug('Too many on flight. Ignoring call');
+      return;
+    }
+    currentInFlight++;
     processPath(qPop())
-      .then(processQueue)
-      .catch(processQueue);
+      .then(next)
+      .catch(function (err) {
+        logger.error('Error while walking the fs.', err);
+        console.error(err);
+        next();
+      });
   }
 }
 
 
 function processPath(path) {
-  console.log(`processPath(${path})`);
   return new Promise(function (resolve, reject) {
     function onStat(err, stats) {
       if (err) {
@@ -92,7 +110,8 @@ function processDirectory(path) {
 }
 
 
-function processFile(path) {
+function processFile(inputPath) {
+  const path = Path.resolve(inputPath);
   logger.debug(`processFile(${path})`);
   return adapter.processFile(path)
     .then(result => {

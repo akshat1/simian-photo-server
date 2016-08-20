@@ -2,7 +2,7 @@
 
 const config = require('./config.js');
 const logger = require('./logger.js')(config('web.log.level'), config('web.log.filePath'));
-//const fs = require('fs-extra');
+const fs = require('fs-extra');
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -39,9 +39,18 @@ function setUp() {
   app.use(bodyParser.json());
 
   // set up static file serving
-  const webRoot = path.join(process.cwd(), config('web.root'));
-  logger.info('webRoot: ', webRoot);
-  app.use('/', serveStatic(webRoot));
+  const webRootPath = path.join(process.cwd(), config('web.root'));
+  const thumbnailDirPath = config('adapters.thumbnail.location');
+  const imagePreviewDirPath = config('adapters.preview.location');
+  logger.info('webRootPath         : ', webRootPath);
+  logger.info('thumbnailDirPath    : ', thumbnailDirPath);
+  logger.info('imagePreviewDirPath : ', imagePreviewDirPath);
+  fs.ensureDirSync(webRootPath);
+  fs.ensureDirSync(thumbnailDirPath);
+  fs.ensureDirSync(imagePreviewDirPath);
+  app.use('/', serveStatic(webRootPath));
+  app.use('/thumbnail', serveStatic(thumbnailDirPath));
+  app.use('/preview', serveStatic(imagePreviewDirPath));
   app.use('/api', getApiRouter());
 }
 

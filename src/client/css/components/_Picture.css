@@ -1,3 +1,34 @@
 .sps-picture {
-  background: #EEE;
+  height: 100%;
+
+
+  .sps-picture-metadata {
+    font-size: 0.7em;
+
+    table {
+      border-collapse: collapse;
+    }
+
+    tr:nth-child(odd) {
+      background: $gray-1;
+    }
+
+    td {
+      padding: $padding-s;
+      vertical-align: top;
+
+      &:first-child {
+        font-weight: bold;
+      }
+    }
+  }
+
+
+  .sps-picture-split-pane {
+    height: 100%;
+
+    > .sps-split-pane-second {
+      width: 300px;
+    }
+  }
 }
