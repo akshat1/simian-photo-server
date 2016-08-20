@@ -9,7 +9,8 @@ const SplitPane = require('./SplitPane.jsx');
 class Collection extends React.Component {
   static className = {
     root: 'sps-collection',
-    thumbnailContainer: (hasSelection => `sps-thumbnail-container ${hasSelection ? 'mini' : ''}`)
+    thumbnailContainer: (hasSelection => `sps-thumbnail-container ${hasSelection ? 'mini' : ''}`),
+    splitPane: 'sps-collection-split-pane'
   };
 
 
@@ -72,7 +73,7 @@ class Collection extends React.Component {
   renderNonEmpty() {
     if (this.props.selectedPicture)
       return (
-        <SplitPane direction = 'vertical' className='sps-collection-split-pane'>
+        <SplitPane direction = 'vertical' className = {Collection.className.splitPane}>
           {this.renderSelectedPicture()}
           {this.renderThumbnails()}
         </SplitPane>

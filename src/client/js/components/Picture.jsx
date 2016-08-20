@@ -9,7 +9,8 @@ const _ = require('lodash');
 class Picture extends React.Component {
   static className = {
     root: 'sps-picture',
-    metadata: 'sps-picture-metadata'
+    metadata: 'sps-picture-metadata',
+    splitPane: 'sps-picture-split-pane'
   }
 
 
@@ -58,7 +59,7 @@ class Picture extends React.Component {
     console.log(this.props);
     return (
       <div className = {Picture.className.root}>
-        <SplitPane direction = 'horizontal' className = 'sps-picture-split-pane'>
+        <SplitPane direction = 'horizontal' className = {Picture.className.splitPane}>
           {this.renderPreview()}
           {this.renderMetadata()}
         </SplitPane>

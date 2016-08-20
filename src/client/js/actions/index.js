@@ -78,6 +78,11 @@ function fetchCollections() {
       .then(responseToJSON)
       .then(function (json) {
         dispatch(receiveCollections(json));
+        return json;
+      })
+      .then(function (collections) {
+        if (collections && collections[0])
+          dispatch(selectCollection(collections[0].id));
       });
   };
 }
@@ -90,6 +95,11 @@ function selectCollection(collectionId) {
       .then(responseToJSON)
       .then(function (json) {
         dispatch(receiveSelectedCollection(json));
+        return json;
+      })
+      .then(function (collection) {
+        if (collection && collection.pictures[0])
+          dispatch(selectPicture(collection.pictures[0].id));
       });
   };
 }
