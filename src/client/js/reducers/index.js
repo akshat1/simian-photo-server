@@ -10,11 +10,9 @@ const {
   RECEIVE_SELECTED_PICTURE
 } = require('../actions');
 const initialState = require('../store/initialState.js');
-console.log(initialState);
 
 
 function isFetchingCollections(isFetchingCollections = false, action) {
-  //console.log(arguments);
   switch (action.type) {
     case REQUEST_COLLECTIONS: {
       return true;

@@ -10,7 +10,6 @@ function mapStateToProps(state) {
     collection: state.selectedCollection,
     isFetchingCollection: state.isFetchingSelectedCollection
   };
-  console.log('result is ', result);
   return result;
 }
 
