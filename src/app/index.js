@@ -7,5 +7,7 @@ const crawler = require('./crawler/ipc-server.js');
 
 logger.info('simian Photo Server start');
 logger.info('starting web-server');
-crawler.start();
+console.log(`crawler.auto.scan is ${config('crawler.auto.scan')}`);
+if (config('crawler.auto.scan'))
+  crawler.start();
 webServer.start();

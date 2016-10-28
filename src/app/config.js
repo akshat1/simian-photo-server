@@ -23,6 +23,7 @@ const defaultConfig = {
   'db.log.level': 'debug',
   'db.log.filePath': path.join(logDir, 'db.log'),
   'db.location': path.join(process.cwd(), 'db'),
+  'crawler.auto.scan': true,
   'crawler.log.level': 'debug',
   'crawler.log.filePath': path.join(logDir, 'crawler.log'),
   'adapters.log.level': 'debug',

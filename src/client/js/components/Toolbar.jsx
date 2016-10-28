@@ -11,11 +11,10 @@ class Toolbar extends React.Component {
   render() {
     return (
       <div className = {Toolbar.className.root}>
-        Simian Picture Server
+        Le Toolbar
       </div>
     );
   }
 }
-
 
 module.exports = Toolbar;

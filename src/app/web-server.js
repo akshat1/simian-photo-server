@@ -19,7 +19,10 @@ function promiseToApi(fn) {
         console.log('sending response!');
         response.json(result);
       })
-      .catch(response.send);
+      .catch(function (err) {
+        console.error(err);
+        response.error(err);
+      });
   };
 }
 
@@ -49,8 +52,12 @@ function setUp() {
   fs.ensureDirSync(thumbnailDirPath);
   fs.ensureDirSync(imagePreviewDirPath);
   app.use('/', serveStatic(webRootPath));
-  app.use('/thumbnail', serveStatic(thumbnailDirPath));
-  app.use('/preview', serveStatic(imagePreviewDirPath));
+  app.use('/thumbnail', serveStatic(thumbnailDirPath, {
+    maxAge: '1y'
+  }));
+  app.use('/preview', serveStatic(imagePreviewDirPath, {
+    maxAge: '1y'
+  }));
   app.use('/api', getApiRouter());
 }
 

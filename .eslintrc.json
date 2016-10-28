@@ -174,7 +174,8 @@
     ],
 
     "react/jsx-uses-react": "warn",
-    "react/jsx-uses-vars": "warn"
+    "react/jsx-uses-vars": "warn",
+    "no-irregular-whitespace": 0
   },
 
   "env": {

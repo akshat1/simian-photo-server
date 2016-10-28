@@ -4,7 +4,8 @@
   ],
   "log.level": "info",
   "web.log.level": "debug",
-  "db.log.level": "info",
+  "db.log.level": "debug",
   "crawler.log.level": "info",
+  "crawler.auto.scan": false,
   "adapters.log.level": "info"
 }

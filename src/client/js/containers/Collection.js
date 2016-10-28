@@ -5,13 +5,9 @@ const Collection = require('../components/Collection.jsx');
 
 
 function mapStateToProps(state) {
-  const result = {
-    selectedPicture: state.selectedPicture,
-    collection: state.selectedCollection,
-    isFetchingCollection: state.isFetchingSelectedCollection
+  return {
+    collection: state.selectedCollection
   };
-  return result;
 }
-
 
 module.exports = connect(mapStateToProps)(Collection);

@@ -2,21 +2,38 @@
 
 const React = require('react');
 const Toolbar = require('./Toolbar.jsx');
-const CollectionsList = require('../containers/CollectionsList.js');
-const Collection = require('../containers/Collection.js');
 
 class App extends React.Component {
   static className = {
     root: 'sps-app',
-    middle: 'sps-mid'
+    header: 'sps-app-header',
+    body: 'sps-app-body',
+    footer: 'sps-app-footer'
   };
 
 
-  renderCollections() {
+  renderHeader() {
     return (
-      <div className = {App.className.middle}>
-        <CollectionsList />
-        <Collection />
+      <div className = {App.className.header}>
+        <Toolbar />
+      </div>
+    );
+  }
+
+
+  renderBody() {
+    return (
+      <div className = {App.className.body}>
+        {this.props.children || 'HELLO'}
+      </div>
+    );
+  }
+
+
+  renderFooter() {
+    return (
+      <div className = {App.className.footer}>
+        FOOTER
       </div>
     );
   }
@@ -25,8 +42,9 @@ class App extends React.Component {
   render() {
     return (
       <div className = {App.className.root}>
-        <Toolbar />
-        {this.renderCollections()}
+        {this.renderHeader()}
+        {this.renderBody()}
+        {this.renderFooter()}
       </div>
     );
   }

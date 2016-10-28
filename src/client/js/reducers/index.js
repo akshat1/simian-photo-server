@@ -1,6 +1,7 @@
 'use strict';
 
 const { combineReducers } = require('redux');
+const { routerReducer } = require('react-router-redux');
 const {
   REQUEST_COLLECTIONS,
   RECEIVE_COLLECTIONS,
@@ -9,7 +10,7 @@ const {
   REQUEST_SELECTED_PICTURE,
   RECEIVE_SELECTED_PICTURE
 } = require('../actions');
-const initialState = require('../store/initialState.js');
+//const initialState = require('../store/initialState.js');
 
 
 function isFetchingCollections(isFetchingCollections = false, action) {
@@ -78,7 +79,8 @@ const rootReducer = combineReducers({
   isFetchingSelectedPicture,
   collections,
   selectedCollection,
-  selectedPicture
+  selectedPicture,
+  routing: routerReducer
 });
 
 module.exports = rootReducer;

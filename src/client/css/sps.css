@@ -3,10 +3,7 @@
 @import 'include/_normalize.css';
 @import 'include/_layout.css';
 @import 'components/_App.css';
-@import 'components/_Collection.css';
-@import 'components/_Picture.css';
-@import 'components/_CollectionList.css';
-@import 'components/_CollectionListItem.css';
-@import 'components/_Thumbnail.css';
 @import 'components/_Toolbar.css';
-@import 'components/_SplitPane.css';
+@import 'components/_Library.css';
+@import 'components/_CollectionThumbnail.css';
+@import 'components/_PictureThumbnail.css';

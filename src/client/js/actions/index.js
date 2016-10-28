@@ -1,6 +1,7 @@
 'use strict';
 
 const fetch = require('isomorphic-fetch');
+const { browserHistory } = require('react-router');
 
 /*
 todo
@@ -113,6 +114,11 @@ function selectPicture(pictureId) {
 }
 
 
+function navigateToCollection(collectionId) {
+  browserHistory.push(`/collection/${collectionId}`);
+}
+
+
 module.exports = {
   REQUEST_COLLECTIONS,
   RECEIVE_COLLECTIONS,
@@ -126,5 +132,6 @@ module.exports = {
   receiveSelectedCollection,
   selectCollection,
   selectPicture,
-  fetchCollections
+  fetchCollections,
+  navigateToCollection
 };

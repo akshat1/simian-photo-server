@@ -4,19 +4,32 @@
  * DB module. Provides persistence.
  * @module ./db
  */
-
-const mongoDB = require('promised-mongo');
+const mp = require('mongodb-promise');
 const config = require('./config.js');
 const logger = require('./logger.js')(config('db.log.level'), config('db.log.filePath'));
 const hashes = require('node-hashes');
 const Path = require('path');
 const _ = require('lodash');
 
-
 const url = 'mongodb://localhost:27017/simianPhotoServer?maxPoolSize=10';
-const db = mongoDB(url);
-const colCollections = db.collection('collections');
-const colPictures = db.collection('pictures');
+let colCollections = null;
+let colPictures = null;
+
+mp.MongoClient.connect(url)
+  .then(function (db) {
+    db.collection('collections')
+      .then(function (col) {
+        colCollections = col;
+        console.log('AAA');
+      });
+
+    db.collection('pictures')
+      .then(function (col) {
+        colPictures = col;
+        console.log('BBB');
+      });
+  });
+
 
 
 function getCollection(args) {
