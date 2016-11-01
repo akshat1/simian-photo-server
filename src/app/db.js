@@ -28,6 +28,11 @@ mp.MongoClient.connect(url)
         colPictures = col;
         console.log('BBB');
       });
+  })
+  .catch(function (err) {
+    console.error('Error connecting to DB');
+    console.error(err);
+    process.exit(1);
   });
 
 
