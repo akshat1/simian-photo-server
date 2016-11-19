@@ -1,13 +1,36 @@
-'use strict';
+'use require';
 
 const gulp = require('gulp');
-require('./gfiles/app.js');
 require('./gfiles/client.js');
+require('./gfiles/crawler.js');
+require('./gfiles/server.js');
+require('./gfiles/quality.js');
 
 
-gulp.task('app', ['build-app']);
-gulp.task('client', ['build-client']);
+gulp.task('all', [
+  'client',
+  'server',
+  'crawler'
+]);
 
-gulp.task('build', ['build-app', 'build-client']);
-gulp.task('test', ['test-app', 'test-client-js']);
-gulp.task('default', ['build'])
+
+gulp.task('clean-all', [
+  'clean-client', 
+  'clean-server', 
+  'clean-crawler'
+]);
+
+
+gulp.task('default', [
+  'all'
+]);
+
+
+gulp.task('lint', [
+  'lint-js'
+]);
+
+
+gulp.task('test', [
+  'test-js'
+]);
