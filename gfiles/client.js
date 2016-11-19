@@ -1,4 +1,4 @@
-'use require';
+'use strict';
 
 const gulp = require('gulp');
 const { client } = require('./locations.js');

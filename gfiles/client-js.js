@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 const path = require('path');
-const {client} = require('./locations.js');
+const { client } = require('./locations.js');
 
 
 function getWebpackConfig() {
@@ -22,10 +22,10 @@ function getWebpackConfig() {
 }
 
 
-gulp.task('client-js', function() {
+gulp.task('client-js', function () {
   const webpack = require('webpack-stream');
 
   return gulp.src(client.js.entry)
     .pipe(webpack(getWebpackConfig()))
-    .pipe(gulp.dest(path.dirname(client.js.dest)))
+    .pipe(gulp.dest(path.dirname(client.js.dest)));
 });

@@ -4,7 +4,7 @@ const gulp = require('gulp');
 const { client } = require('./locations.js');
 
 
-function getPostCSSConf () {
+function getPostCSSConf() {
   return [
     require('postcss-import'),
     require('postcss-mixins')(require('../postcss/mixins/index.js')),
