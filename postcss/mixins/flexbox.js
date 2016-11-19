@@ -29,6 +29,6 @@ function flexItem(mixin, grow, shrink) {
 
 
 module.exports = {
-  flexBox: flexBox,
-  flexItem: flexItem
+  flexBox,
+  flexItem
 };

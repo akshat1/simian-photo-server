@@ -1,4 +1,4 @@
-'use require';
+'use strict';
 
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
@@ -8,11 +8,10 @@ const mocha = require('gulp-mocha');
 const locations = require('./locations.js');
 
 
-function combineArrays() {
-  const arrays = Array.prototype.slice.apply([], arguments);
-  const res = [];
+function combineArrays(...arrays) {
+  let res = [];
   for (let arr of arrays) {
-    if (!arr.isArray(Arr))
+    if (!Array.isArray(arr))
       arr = [arr];
     res = res.concat(arr);
   }
@@ -26,7 +25,7 @@ function getAllJSPaths() {
 }
 
 
-gulp.task('instrument-js', function() {
+gulp.task('instrument-js', function () {
   gulp.src(getAllJSPaths())
     .pipe(istanbul({
       includeUntested: true
@@ -35,21 +34,21 @@ gulp.task('instrument-js', function() {
 });
 
 
-gulp.task('test-js', ['instrument-js'], function() {
-    return gulp.src(locations.test.src)
-      .pipe(mocha())
-      .pipe(istanbul.writeReports({
-        dir: locations.test.coverage
-      }))
-      .pipe(istanbul.enforceThresholds({
-        thresholds: {
-          global: 90
-        }
-      }));
+gulp.task('test-js', ['instrument-js'], function () {
+  return gulp.src(locations.test.src)
+    .pipe(mocha())
+    .pipe(istanbul.writeReports({
+      dir: locations.test.coverage
+    }))
+    .pipe(istanbul.enforceThresholds({
+      thresholds: {
+        global: 90
+      }
+    }));
 });
 
 
-gulp.task('lint-js', function() {
+gulp.task('lint-js', function () {
   return gulp.src(getAllJSPaths())
     .pipe(eslint())
     .pipe(eslint.format())

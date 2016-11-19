@@ -1,11 +1,13 @@
+'use strict';
+
 const gulp = require('gulp');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
 const del = require('del');
-const {server} = require('./locations.js');
+const { server } = require('./locations.js');
 
 
-gulp.task('server', function() {
+gulp.task('server', function () {
   return gulp.src(server.src)
     .pipe(sourcemaps.init())
     .pipe(babel())
@@ -14,6 +16,6 @@ gulp.task('server', function() {
 });
 
 
-gulp.task('clean-server', function() {
+gulp.task('clean-server', function () {
   return del([server.clean]);
 });

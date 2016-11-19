@@ -1,4 +1,4 @@
-'use require';
+'use strict';
 
 const client = {
   clean: 'public/',

@@ -1,7 +1,7 @@
 'use require';
 
 const gulp = require('gulp');
-const {client} = require('./locations.js');
+const { client } = require('./locations.js');
 require('./client-js.js');
 require('./client-css.js');
 require('./client-misc.js');
@@ -15,7 +15,7 @@ gulp.task('client', [
 ]);
 
 
-gulp.task('clean-client', function() {
+gulp.task('clean-client', function () {
   const del = require('del');
-  return del([client.clean])
+  return del([client.clean]);
 });

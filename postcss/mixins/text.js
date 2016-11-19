@@ -5,7 +5,7 @@ function textOverflow(mixin, overflowCharacter) {
     overflow: 'hidden',
     'white-space': 'nowrap',
     'text-overflow': overflowCharacter || 'ellipsis'
-  }
+  };
 }
 
 
