@@ -1,38 +1,54 @@
-'use strict';
+'use require';
 
-const Locations = {
-  app: {
-    src: 'src/app/**/*.js',
-    dest: 'app/',
-    coverage: 'coverage/app',
-    test: 'test/app/**/*.js'
+const client = {
+  clean: 'public/',
+
+  js: {
+    src: ['src/js/**/*.js', 'src/js/**/*.jsx'],
+    entry: 'src/js/client/index.jsx',
+    dest: 'public/js/app.js'
   },
 
-  client: {
-    js: {
-      src: ['src/client/js/**/*.js', 'src/client/js/**/*.jsx'],
-      entry: './src/client/js/index.jsx',
-      dest: './client/js/app.js',
-      coverage: 'coverage/client',
-      test: 'test/client/**/*.js'
-    },
+  css: {
+    src: ['src/css/**/*.css', '!src/css/**/_*.css'],
+    dest: 'public/css/app.css'
+  },
 
-    css: {
-      src: ['src/client/css/**/*.css', '!src/client/css/**/_*.css'],
-      lib: 'src/client/lib/**/*.css',
-      dest: 'client/css'
-    },
+  html: {
+    src: 'src/html/**/*.html',
+    dest: 'public/'
+  },
 
-    html: {
-      src: 'src/client/html/**/*.html',
-      dest: 'client/'
-    },
-    resources: {
-      src: 'src/client/resources/**/*',
-      dest: 'client/resources'
-    }
+  assets: {
+    src: 'src/assets/**/*',
+    dest: 'public/assets/'
   }
 };
 
 
-module.exports = Locations;
+const server = {
+  clean: 'server/',
+  src: 'src/js/server/**/*.js',
+  dest: './server/'
+};
+
+
+const crawler = {
+  clean: 'crawler/',
+  src: 'src/js/crawler/**/*.js',
+  dest: './crawler/'
+};
+
+
+const test = {
+  src: 'test/**/*.js',
+  coverage: './coverage/'
+};
+
+
+module.exports = {
+  client,
+  server,
+  crawler,
+  test
+};
