@@ -1,4 +1,4 @@
-'use strict';
+'use strict'; // eslint-disable-line strict
 
 const ColorFunctions = require('simian-color-functions');
 
