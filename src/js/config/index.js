@@ -1,6 +1,7 @@
 /**
 @module config
-@description Exposes itself as a function which itself is a wrapper around nconf.get. Uses command line, environment, config file and defaults; in this order.
+@description Exposes itself as a function which itself is a wrapper around nconf.get. Uses command
+line, environment, config file and defaults; in this order.
 */
 import nconf from 'nconf';
 import path from 'path';
