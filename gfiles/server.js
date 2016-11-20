@@ -2,6 +2,7 @@
 
 const gulp = require('gulp');
 const babel = require('gulp-babel');
+const changed = require('gulp-changed');
 const sourcemaps = require('gulp-sourcemaps');
 const del = require('del');
 const { server } = require('./locations.js');
@@ -9,6 +10,7 @@ const { server } = require('./locations.js');
 
 gulp.task('server', function () {
   return gulp.src(server.src)
+    .pipe(changed(server.dest))
     .pipe(sourcemaps.init())
     .pipe(babel())
     .pipe(sourcemaps.write('.'))

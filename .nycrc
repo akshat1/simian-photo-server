@@ -1,0 +1,12 @@
+{
+  "all": true,
+  "include": ["src/js/**/*.js", "src/js/**/*.jsx"],
+  "reporter": [
+    "text",
+    "lcov"
+  ],
+  "extension": [
+    ".jsx",
+    ".js"
+  ]
+}

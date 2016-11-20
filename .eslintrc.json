@@ -159,7 +159,7 @@
     "max-len": [
       "error",
       {
-        "code": 100,
+        "code": 150,
         "ignoreUrls": true
       }
     ],
@@ -200,7 +200,7 @@
       "jsx": true,
       "classes": true
     },
-    "sourceType": "script"
+    "sourceType": "module"
   },
 
   "parser": "babel-eslint",

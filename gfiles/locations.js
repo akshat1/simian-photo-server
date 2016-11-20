@@ -28,14 +28,14 @@ const client = {
 
 const server = {
   clean: 'server/',
-  src: 'src/js/server/**/*.js',
+  src: ['src/js/**/*.js', '!src/js/client/**/*.js', '!src/js/crawler/**/*.js'],
   dest: './server/'
 };
 
 
 const crawler = {
   clean: 'crawler/',
-  src: 'src/js/crawler/**/*.js',
+  src: ['src/js/**/*.js', '!src/js/client/**/*.js', '!src/js/server/**/*.js'],
   dest: './crawler/'
 };
 
