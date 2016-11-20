@@ -7,7 +7,7 @@ function getFakeNConf() {
   const fake = {};
   const markers = [];
   fake.markers = markers;
-  const makeTestFunction = function (marker) {
+  function makeTestFunction(marker) {
     return function () {
       markers.push(marker);
       return fake;
@@ -24,7 +24,7 @@ function getFakeNConf() {
   return fake;
 }
 
-describe('config', function() {
+describe('config', function () {
   describe('nconf setup', function () {
     let nconf;
     let config;
