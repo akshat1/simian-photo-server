@@ -5,7 +5,7 @@
   "main": "app/index.js",
   "scripts": {
     "test": "node_modules/.bin/nyc --require babel-core/register node_modules/.bin/mocha src/test/**/*.js",
-    "lint": "./node_modules/.bin/eslint src/js/",
+    "lint": "./node_modules/.bin/eslint gfiles/ src/js/ src/test",
     "clean": "gulp clean-all",
     "build": "gulp all",
     "clean-build": "npm run clean && npm run build",
