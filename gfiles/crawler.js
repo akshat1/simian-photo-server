@@ -2,7 +2,7 @@
 
 const gulp = require('gulp');
 const babel = require('gulp-babel');
-const chaged = require('gulp-changed');
+const changed = require('gulp-changed');
 const sourcemaps = require('gulp-sourcemaps');
 const del = require('del');
 const { crawler } = require('./locations.js');
