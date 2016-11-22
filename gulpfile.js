@@ -4,7 +4,6 @@ const gulp = require('gulp');
 require('./gfiles/client.js');
 require('./gfiles/crawler.js');
 require('./gfiles/server.js');
-require('./gfiles/quality.js');
 
 
 gulp.task('all', [
@@ -28,9 +27,4 @@ gulp.task('default', [
 
 gulp.task('lint', [
   'lint-js'
-]);
-
-
-gulp.task('test', [
-  'test-js'
 ]);
