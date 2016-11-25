@@ -4,7 +4,7 @@
   "description": "A node based photo server",
   "main": "app/index.js",
   "scripts": {
-    "test": "node_modules/.bin/nyc --require babel-core/register node_modules/.bin/mocha src/test/**/*.js",
+    "test": "node_modules/.bin/nyc node_modules/.bin/mocha src/test/**/*.js",
     "lint": "./node_modules/.bin/eslint gfiles/ src/js/ src/test",
     "clean": "gulp clean-all",
     "build": "gulp all",
@@ -28,6 +28,29 @@
     "url": "https://github.com/akshat1/simian-photo-server/issues"
   },
   "homepage": "https://github.com/akshat1/simian-photo-server#readme",
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/js/**/*.js",
+      "src/js/**/*.jsx"
+    ],
+    "exclude": [
+      "src/test/**"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "extension": [
+      ".jsx",
+      ".js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  },
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",

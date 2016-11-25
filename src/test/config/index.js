@@ -38,7 +38,6 @@ describe('config', function () {
       nconf = getFakeNConf();
       mockery.registerMock('nconf', nconf);
       config = require('../../js/config').default;
-      console.log(config);
     });
 
 
