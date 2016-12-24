@@ -22,7 +22,7 @@ function getWebpackConfig() {
 }
 
 
-gulp.task('client-js', function () {
+gulp.task('client-js', function() {
   const webpack = require('webpack-stream');
 
   return gulp.src(client.js.entry)

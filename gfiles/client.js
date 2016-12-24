@@ -15,7 +15,7 @@ gulp.task('client', [
 ]);
 
 
-gulp.task('clean-client', function () {
+gulp.task('clean-client', function() {
   const del = require('del');
   return del([client.clean]);
 });

@@ -10,3 +10,4 @@ crawler/
 server/
 public/
 .nyc_output/
+logger.log

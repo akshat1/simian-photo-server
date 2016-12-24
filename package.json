@@ -4,15 +4,15 @@
   "description": "A node based photo server",
   "main": "app/index.js",
   "scripts": {
-    "test": "node_modules/.bin/nyc node_modules/.bin/mocha src/test/**/*.js",
-    "lint": "./node_modules/.bin/eslint gfiles/ src/js/ src/test",
+    "test": "node_modules/.bin/nyc node_modules/.bin/mocha test/**/*.js",
+    "lint": "./node_modules/.bin/eslint gfiles/ src/js/ test",
     "clean": "gulp clean-all",
     "build": "gulp all",
     "clean-build": "npm run clean && npm run build",
     "start-crawler": "node crawler/crawler/index.js",
     "start-server": "node server/server/index.js",
     "start-all": "npm run start-server && npm run start-crawler",
-    "document": "jsdoc src -r -d docs"
+    "document": "jsdoc src -c jsdoc.conf"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
       "src/js/**/*.jsx"
     ],
     "exclude": [
-      "src/test/**"
+      "test/**"
     ],
     "reporter": [
       "text",

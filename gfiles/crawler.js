@@ -8,7 +8,7 @@ const del = require('del');
 const { crawler } = require('./locations.js');
 
 
-gulp.task('crawler', function () {
+gulp.task('crawler', function() {
   return gulp.src(crawler.src)
     .pipe(changed(crawler.dest))
     .pipe(sourcemaps.init())
@@ -19,6 +19,6 @@ gulp.task('crawler', function () {
 
 
 
-gulp.task('clean-crawler', function () {
+gulp.task('clean-crawler', function() {
   return del([crawler.clean]);
 });

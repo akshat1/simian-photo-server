@@ -1,4 +1,4 @@
-# simian-photo-server [![Codacy Badge](https://api.codacy.com/project/badge/Grade/58649b8d4db6467984b7f9f5dc982f0f)](https://www.codacy.com/app/akshat-sh/simian-photo-server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akshat1/simian-photo-server&amp;utm_campaign=Badge_Grade)
+# simian-photo-server
 
 A node based photo server
 
@@ -20,4 +20,3 @@ I recently decided to rewrite from scratch. The working version referenced in bl
 
 ### To execute
 `npm run start-all`
-
