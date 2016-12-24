@@ -41,9 +41,9 @@ export function _getTransports({ filePath, level = {} }) {
 
 /**
 @param {Object} opts
-@param {String} opts.level.console
-@param {String} opts.level.file
+@param {String} opts.level - debugger level
 @param {String} opts.filePath
+@param {String} [opts.fileLevel] - optional level override when logging to file
 @returns {Logger}
 */
 export function getLogger(opts = {}) {
@@ -57,7 +57,7 @@ export function getLogger(opts = {}) {
 
   /*
   Instead of returning the winston logger, we return a very dumb object with just four functions.
-  That is be design, in order to minimise our dependence on winston in case we have to use 
+  That is be design, in order to minimise our dependence on winston in case we have to use
   something else in the future.
   */
   return {

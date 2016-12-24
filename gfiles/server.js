@@ -8,7 +8,7 @@ const del = require('del');
 const { server } = require('./locations.js');
 
 
-gulp.task('server', function () {
+gulp.task('server', function() {
   return gulp.src(server.src)
     .pipe(changed(server.dest))
     .pipe(sourcemaps.init())
@@ -18,6 +18,6 @@ gulp.task('server', function () {
 });
 
 
-gulp.task('clean-server', function () {
+gulp.task('clean-server', function() {
   return del([server.clean]);
 });

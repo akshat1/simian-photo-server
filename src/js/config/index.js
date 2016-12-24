@@ -5,16 +5,18 @@ line, environment, config file and defaults; in this order.
 */
 import nconf from 'nconf';
 import path from 'path';
+import getLogger from '../logger';
 
 
 const configFilePath = path.join(process.cwd(), 'config.json');
 const logDir = path.join(process.cwd(), 'log');
 const defaultConfig = {
-  // logging
-  'log.level': 'debug',
-  'log.filePath': path.join(logDir, 'server.log')
-
-  // web server
+  'log.level.default': 'debug',
+  'log.filePath': path.join(logDir, 'server.log'),
+  'webserver.root.path': '/public',
+  'webserver.port': 8080,
+  'app.thumbnail.path': '/tmp/thumbnails',
+  'app.imagePreview.path': '/tmp/preview'
 };
 
 
@@ -30,11 +32,21 @@ nconf
   .defaults(defaultConfig);
 
 
+const logger = getLogger({
+  level: 'debug',
+  filePath: path.join(process.cwd(), nconf.get('logger.log.filePath') || 'logger.log')
+});
+
 /**
-@function
 @param {String} key
 @returns {Object|Number|String} value
 */
-const config = nconf.get.bind(nconf);
+function config(key) {
+  const result = nconf.get(key);
+  if (typeof result === 'undefined')
+    logger.warn(`no config value found for key: ${key}`);
+  return result; 
+}
+
 // usage: value = config('key')
 export default config;

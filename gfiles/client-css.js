@@ -15,7 +15,7 @@ function getPostCSSConf() {
 }
 
 
-gulp.task('client-css', function () {
+gulp.task('client-css', function() {
   const postCSS = require('gulp-postcss');
   const sourcemaps = require('gulp-sourcemaps');
 
