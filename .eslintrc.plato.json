@@ -1,0 +1,33 @@
+{
+  "rules": {},
+
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+
+  "ecmaFeatures": {
+    "jsx": true,
+    "experimentalObjectRestSpread": true,
+    "modules": true
+  },
+
+  "plugins": [],
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "classes": true
+    },
+    "sourceType": "module"
+  },
+
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "mocha": true
+  }
+}

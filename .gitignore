@@ -5,9 +5,10 @@ npm-debug.log
 /coverage/
 /log/
 /docs/
+/plato/
 /image-cache
-crawler/
-server/
-public/
+/crawler/
+/server/
+/public/
 .nyc_output/
 logger.log
