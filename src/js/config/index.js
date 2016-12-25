@@ -16,7 +16,10 @@ const defaultConfig = {
   'webserver.root.path': '/public',
   'webserver.port': 8080,
   'app.thumbnail.path': '/tmp/thumbnails',
-  'app.imagePreview.path': '/tmp/preview'
+  'app.imagePreview.path': '/tmp/preview',
+  'db.url': 'mongodb://localhost:27017/simianPhotoServer',
+  'db.log.level': 'debug',
+  'db.log.path': path.join(logDir, 'db.log')
 };
 
 
