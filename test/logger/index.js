@@ -1,11 +1,9 @@
 import mockery from 'mockery';
 import chai from 'chai';
 chai.should();
-import sinon from 'sinon';
 
 
 describe('logger', function() {
-  let winston;
   let loggerModule;
 
   beforeEach(function() {

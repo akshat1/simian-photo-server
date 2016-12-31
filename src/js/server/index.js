@@ -4,4 +4,5 @@
 */
 
 import Server from './server.js';
+import DB from './db';
 Server.startWebServer();

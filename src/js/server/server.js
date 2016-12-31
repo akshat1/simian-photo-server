@@ -21,7 +21,6 @@ const Server = {};
 
 
 /**
- * @propertyof Server
  * @memberof module:server
  * @param {App} app
  * @returns {App} - the same app instance that was supplied as argument
@@ -41,11 +40,10 @@ Server.setUpStaticServer = function(app) {
   app.use('/thumbnail', serveStatic(thumbnailDirPath));
   app.use('/preview', serveStatic(imagePreviewPath));
   return app;
-}
+};
 
 
 /**
- * @propertyof Server
  * @memberof module:server
  * @description Starts the entire web-server
  */
@@ -58,11 +56,10 @@ Server.startWebServer = function() {
   app.listen(listenPort, Server.handleServerStart);
   logger.info(`Listening at port: ${listenPort}`);
   logger.debug('done');
-}
+};
 
 
 /**
- * @propertyof Server
  * @memberof module:server
  * @description Handle server start event. Empty for now.
  */
