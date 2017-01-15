@@ -11,15 +11,17 @@ import getLogger from '../logger';
 const configFilePath = path.join(process.cwd(), 'config.json');
 const logDir = path.join(process.cwd(), 'log');
 const defaultConfig = {
-  'log.level.default': 'debug',
-  'log.filePath': path.join(logDir, 'server.log'),
-  'webserver.root.path': '/public',
-  'webserver.port': 8080,
-  'app.thumbnail.path': '/tmp/thumbnails',
+  'log.level.default'    : 'debug',
+  'log.filePath'         : path.join(logDir, 'server.log'),
+  'webserver.root.path'  : '/public',
+  'webserver.port'       : 8080,
+  'app.thumbnail.path'   : '/tmp/thumbnails',
   'app.imagePreview.path': '/tmp/preview',
-  'db.url': 'mongodb://localhost:27017/simianPhotoServer',
-  'db.log.level': 'debug',
-  'db.log.path': path.join(logDir, 'db.log')
+  'db.url'               : 'mongodb://localhost:27017/simianPhotoServer',
+  'db.log.level'         : 'debug',
+  'db.log.path'          : path.join(logDir, 'db.log'),
+  'crud.log.level'       : 'debug',
+  'crud.log.path'        : path.join(logDir, 'crud.log')
 };
 
 
