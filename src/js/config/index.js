@@ -21,7 +21,10 @@ const defaultConfig = {
   'db.log.level'         : 'debug',
   'db.log.path'          : path.join(logDir, 'db.log'),
   'crud.log.level'       : 'debug',
-  'crud.log.path'        : path.join(logDir, 'crud.log')
+  'crud.log.path'        : path.join(logDir, 'crud.log'),
+  'crawler.log.level'    : 'debug',
+  'crawler.log.path'     : path.join(logDir, 'crawler.log'),
+  'system.fs.directories': ['/home/xu0/photos']
 };
 
 

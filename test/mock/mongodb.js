@@ -25,7 +25,7 @@ export function collection(findResult) {
     find,
     update
   };
-};
+}
 
 
 export function findResult(toArrayResult) {

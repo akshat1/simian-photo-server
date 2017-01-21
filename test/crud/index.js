@@ -70,7 +70,7 @@ describe('crud', function() {
       .initialise()
       .then(function() {
         Crud.isInitialised.should.equal(true);
-        for (let key in Crud.collectionName) {
+        for (const key in Crud.collectionName) {
           Crud.collections[key].should.equal('-a-collection-');
           db.collection.calledWith(key);
         }
