@@ -9,7 +9,7 @@ import getLogger from '../logger';
 
 const logger = getLogger({
   level: config('crud.log.level'),
-  filePath: 'crud.log.path'
+  filePath: config('crud.log.path')
 });
 
 
@@ -142,7 +142,7 @@ Crud.putGroups = function putGroups(groups = []) {
     .initialise()
     .then(function() {
       const collection = Crud.collections[Crud.CollectionName.Groups];
-      const promises = groups.map(group => collection.update({}, group, { upsert: true}));
+      const promises = groups.map(group => collection.update({}, group, { upsert: true }));
       return Promise
         .all(promises)
         .then(() => Promise.resolve(groups));
@@ -179,7 +179,7 @@ Crud.putPictures = function putPictures(pictures = []) {
     .initialise()
     .then(function() {
       const collection = Crud.collections[Crud.CollectionName.Pictures];
-      const promises = pictures.map(picture => collection.update({}, picture, { upsert: true}));
+      const promises = pictures.map(picture => collection.update({}, picture, { upsert: true }));
       return Promise
         .all(promises)
         .then(() => Promise.resolve(pictures));
