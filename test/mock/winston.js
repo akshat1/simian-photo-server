@@ -16,4 +16,4 @@ const winston = {
 };
 
 
-export default winston;
+module.exports = winston;

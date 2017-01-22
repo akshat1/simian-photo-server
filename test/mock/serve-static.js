@@ -9,4 +9,4 @@ function getServeStatic() {
 const serveStatic = getServeStatic();
 
 
-export default serveStatic;
+module.exports = serveStatic;

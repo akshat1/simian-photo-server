@@ -1,6 +1,5 @@
-import mockery from 'mockery';
-import getFakeNConf from '../mock/nconf';
-import chai from 'chai';
+const mockery = require('mockery');
+const chai = require('chai');
 chai.should();
 
 describe('config', function() {
@@ -14,9 +13,9 @@ describe('config', function() {
         useCleanCache: true,
         warnOnUnregistered: false
       });
-      nconf = getFakeNConf();
+      nconf = require('../mock/nconf');
       mockery.registerMock('nconf', nconf);
-      config = require('../../src/js/config').default;
+      config = require('../../src/js/config').config;
     });
 
 

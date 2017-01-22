@@ -9,4 +9,4 @@ fs.reset = function reset() {
   fs.ensureDirSync.reset();
 };
 
-export default fs;
+module.exports = fs;

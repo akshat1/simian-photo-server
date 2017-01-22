@@ -29,9 +29,9 @@ describe('crud', function() {
   it('tests connect should connect to the db', function() {
     const dbURL = 'D-B-U-R-L';
     const mongodb = require('../mock/mongodb');
-    const config = require('../mock/config').default;
+    const { config } = require('../mock/config');
     config.withArgs('db.url').returns(dbURL);
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     return Crud.connect()
       .then(function(result) {
         mongodb.MongoClient.connect.calledWith(dbURL);
@@ -45,9 +45,9 @@ describe('crud', function() {
   it('tests connect does not try to connect if already connected', function() {
     const dbURL = 'D-B-U-R-L';
     const mongodb = require('../mock/mongodb');
-    const config = require('../mock/config').default;
+    const { config } = require('../mock/config');
     config.withArgs('db.url').returns(dbURL);
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.db = 'foo';
     return Crud.connect()
       .then(function(result) {
@@ -62,7 +62,7 @@ describe('crud', function() {
     // should create db collections for all the items named in the collections enum
     const mongodb = require('../mock/mongodb');
     const db = mongodb.db;
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     db.collection.returns(Promise.resolve('-a-collection-'));
     Crud.connect = sinon.stub();
     Crud.connect.returns(Promise.resolve(db));
@@ -80,7 +80,7 @@ describe('crud', function() {
 
   it('tests initialise does not call connect if already initialised', function() {
     const mongodb = require('../mock/mongodb');
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.isInitialised = true;
     Crud.connect = sinon.stub();
     Crud.connect.returns(Promise.resolve('bar'));
@@ -96,7 +96,7 @@ describe('crud', function() {
 
 
   it('tests getGroups', function() {
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.initialise = sinon.stub();
     Crud.initialise.returns(Promise.resolve());
     const {
@@ -116,7 +116,7 @@ describe('crud', function() {
 
 
   it('tests putGroups', function() {
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.initialise = sinon.stub();
     Crud.initialise.returns(Promise.resolve());
     const { collection } = require('../mock/mongodb');
@@ -136,7 +136,7 @@ describe('crud', function() {
 
 
   it('tests getPictures', function() {
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.initialise = sinon.stub();
     Crud.initialise.returns(Promise.resolve());
     const {
@@ -156,7 +156,7 @@ describe('crud', function() {
 
 
   it('tests putPictures', function() {
-    const Crud = require(crudModulePath).default;
+    const Crud = require(crudModulePath);
     Crud.initialise = sinon.stub();
     Crud.initialise.returns(Promise.resolve());
     const { collection } = require('../mock/mongodb');

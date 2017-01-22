@@ -3,9 +3,9 @@
 @description Exposes itself as a function which itself is a wrapper around nconf.get. Uses command
 line, environment, config file and defaults; in this order.
 */
-import nconf from 'nconf';
-import path from 'path';
-import getLogger from '../logger';
+const nconf = require('nconf');
+const path = require('path');
+const { getLogger } = require('../logger');
 
 
 const configFilePath = path.join(process.cwd(), 'config.json');
@@ -53,8 +53,7 @@ function config(key) {
   const result = nconf.get(key);
   if (typeof result === 'undefined')
     logger.warn(`no config value found for key: ${key}`);
-  return result; 
+  return result;
 }
 
-// usage: value = config('key')
-export default config;
+module.exports = { config };

@@ -1,6 +1,6 @@
-import mockery from 'mockery';
-import sinon from 'sinon';
-import chai from 'chai';
+const mockery = require('mockery');
+const sinon = require('sinon');
+const chai = require('chai');
 chai.should();
 
 
@@ -35,10 +35,10 @@ describe('server', function() {
       const ssThumbnailDirPath = 'SS_THUMBNAILDIRPATH';
       const imagePreviewPath = 'IMAGEPREVIEWPATH';
       const ssImagePreviewPath = 'SS_IMAGEPREVIEWPATH';
-      const config = require('../mock/config').default;
-      const fs = require('../mock/fs-extra').default;
-      const express = require('../mock/express').default;
-      const serveStatic = require('../mock/serve-static.js').default;
+      const { config } = require('../mock/config');
+      const fs = require('../mock/fs-extra');
+      const express = require('../mock/express');
+      const serveStatic = require('../mock/serve-static.js');
       config.withArgs('webserver.root.path').returns(webRootPath);
       config.withArgs('app.thumbnail.path').returns(thumbnailDirPath);
       config.withArgs('app.imagePreview.path').returns(imagePreviewPath);
@@ -46,7 +46,7 @@ describe('server', function() {
       serveStatic.withArgs(thumbnailDirPath).returns(ssThumbnailDirPath);
       serveStatic.withArgs(imagePreviewPath).returns(ssImagePreviewPath);
       const app = express();
-      const Server = require('../../src/js/server/server.js').default;
+      const Server = require('../../src/js/server/server.js');
       Server.setUpStaticServer(app).should.equal(app);
 
       fs.ensureDirSync.callCount.should.equal(3);
@@ -70,10 +70,10 @@ describe('server', function() {
   describe('startWebServer()', function() {
     it('should call startWebServer, use bodyParser and listen on configured port', function() {
       const jsonParser = 'JSON-PARSER';
-      const express = require('../mock/express').default;
-      const bodyParser = require('../mock/body-parser.js').default;
-      const Server = require('../../src/js/server/server.js').default;
-      const config = require('../mock/config').default;
+      const express = require('../mock/express');
+      const bodyParser = require('../mock/body-parser.js');
+      const Server = require('../../src/js/server/server.js');
+      const { config } = require('../mock/config');
       const listenPort = 'WEBSERVER.PORT';
       Server.setUpStaticServer = sinon.stub();
       bodyParser.json.returns(jsonParser);

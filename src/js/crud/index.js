@@ -2,9 +2,9 @@
  * @module crud
  * @description What the name says.
  */
-import MongoClient from 'mongodb';
-import config from '../config';
-import getLogger from '../logger';
+const { MongoClient } = require('mongodb');
+const { config } = require('../config');
+const { getLogger } = require('../logger');
 
 
 const logger = getLogger({
@@ -17,7 +17,7 @@ const logger = getLogger({
  * Enum for group types.
  * @memberof module:model
  */
-export const GroupType = {
+const GroupType = {
   DIRECTORY: 1
 };
 
@@ -43,22 +43,18 @@ export const GroupType = {
  */
 
 
-/**
- * @constant Crud
- * @memberof module:crud
- */
-export const Crud = {
+const Crud = module.exports = {
+  GroupType: GroupType,
   isInitialised: false,
   db: null,
   collections: {},
 };
 
-export default Crud;
-
 
 /**
- * @propertyof Crud
+ * @alias CollectionName
  * @enum {String}
+ * @memberof module:crud
  * @description an enumeration of collection names.
  */
 Crud.CollectionName = {
@@ -69,6 +65,7 @@ Crud.CollectionName = {
 
 /**
  * Connects to the mongodb server and gets a db instance.
+ * @alias connect
  * @memberof module:crud
  * @returns {Promise}
  */
@@ -91,6 +88,7 @@ Crud.connect = function connect() {
 /**
  * Initialises the crud module if required. Calls connect and creates collections named in the
  * CollectionName enumeration (unless they already exist).
+ * @alias initialise
  * @memberof module:crud
  * @return {Promise}
  */
@@ -111,9 +109,10 @@ Crud.initialise = function initialise() {
 
 
 /**
- * @memberof module:crud
  * @param {Object} query - the query to get groups with. As meant for mongo db
  *   `collection.find()`.
+ * @alias getGroups
+ * @memberof module:crud
  * @returns {Promise} - A promise that resolves in an array of Group objects
  */
 Crud.getGroups = function getGroups(query = {}) {
@@ -132,6 +131,7 @@ Crud.getGroups = function getGroups(query = {}) {
 /**
  * Store groups into the DB. Will replace existing groups if found with matching ids.
  * // TODO: We should implement a strict PUT (with 409s) and DELETE
+ * @alias putGroups
  * @memberof module:crud
  * @param {Group[]} groups - the groups to be stored.
  * @returns {Promise} -  a promise that resolves with the same groups that were stored once they
@@ -152,6 +152,8 @@ Crud.putGroups = function putGroups(groups = []) {
 
 /**
  * Get an array of pictures.
+ * @alias getPictures
+ * @memberof module:crud
  * @param {Object} query
  * @returns {Promise} - A promise that resolves into an array of Picture objects.
  */
@@ -170,6 +172,8 @@ Crud.getPictures = function getPictures(query) {
 
 /**
  * Store pictures into the DB.
+ * @alias putPictures
+ * @memberof module:crud
  * @param {Picture} - The pictures to be stored.
  * @returns {Promise} -  a promise that resolves with the same pictures that were stored once they
  *   have been stored.

@@ -12,4 +12,4 @@ const app = {
 const express = sinon.stub();
 express.returns(app);
 
-export default express;
+module.exports = express;
