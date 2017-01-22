@@ -9,4 +9,4 @@ const bodyParser = {
 };
 
 
-export default bodyParser;
+module.exports = bodyParser;

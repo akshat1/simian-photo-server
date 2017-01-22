@@ -2,9 +2,9 @@
 @module logger
 @description A logger module (built as an abstraction around winston). Exposes a getLogger function which will return a simple logger.
 */
-import winston from 'winston';
-import path from 'path';
-import fs from 'fs-extra';
+const winston = require('winston');
+const path = require('path');
+const fs = require('fs-extra');
 
 
 /**
@@ -16,14 +16,20 @@ import fs from 'fs-extra';
 */
 
 
+const Logger = module.exports = {};
+
+
 /**
+@alias _getTransports
+@memberof module:logger
+@access private
 @param {Object} opts
 @param {String} opts.level.console
 @param {String} opts.level.file
 @param {String} opts.filePath
 @return {Array} - an array of winston transports.
 */
-export function _getTransports({ filePath, level = {} }) {
+Logger._getTransports = function _getTransports({ filePath, level = {} }) {
   return [
     new winston.transports.Console({
       level: level.console,
@@ -40,19 +46,21 @@ export function _getTransports({ filePath, level = {} }) {
 
 
 /**
+@alias getLogger
+@memberof module:logger
 @param {Object} opts
 @param {String} opts.level - debugger level
 @param {String} opts.filePath
 @param {String} [opts.fileLevel] - optional level override when logging to file
 @returns {Logger}
 */
-export function getLogger(opts = {}) {
+Logger.getLogger = function getLogger(opts = {}) {
   if (!opts.filePath)
     throw new Error('log file location not provided to logger');
 
   fs.ensureDirSync(path.dirname(opts.filePath));
   const logger = new winston.Logger({
-    transports: _getTransports(opts)
+    transports: Logger._getTransports(opts)
   });
 
   /*
@@ -68,5 +76,3 @@ export function getLogger(opts = {}) {
     error: logger.error.bind(logger)
   };
 }
-
-export default getLogger;

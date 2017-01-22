@@ -24,12 +24,6 @@ describe('logger', function() {
 
 
   describe('getLogger', function() {
-    it('tests that logger.getLogger is a function', function() {
-      loggerModule.getLogger.should.be.a('function');
-      loggerModule.default.should.be.a('function');
-    });
-
-
     it('tests that getLogger throws an error when not given opts.filePath', function() {
       loggerModule.getLogger.should.throw(/log file location not provided to logger/);
     });

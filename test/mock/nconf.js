@@ -26,4 +26,4 @@ function getFakeNConf() {
 }
 
 
-export default getFakeNConf;
+module.exports = getFakeNConf();

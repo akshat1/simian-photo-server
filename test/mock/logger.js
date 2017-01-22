@@ -19,4 +19,4 @@ function getLogger() {
   return logger;
 }
 
-export default getLogger;
+module.exports  = { getLogger };

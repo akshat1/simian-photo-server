@@ -1,21 +1,21 @@
 import sinon from 'sinon';
 
-export const db = {
+const db = {
   collection: sinon.stub()
 };
 db.collection.returns(Promise.resolve('foo'));
 
 
-export const connect = sinon.stub();
+const connect = sinon.stub();
 connect.returns(Promise.resolve(db));
 
 
-export const MongoClient = {
+const MongoClient = {
   connect
 };
 
 
-export function collection(findResult) {
+function collection(findResult) {
   const find = sinon.stub();
   find.returns(findResult);
 
@@ -28,11 +28,17 @@ export function collection(findResult) {
 }
 
 
-export function findResult(toArrayResult) {
+function findResult(toArrayResult) {
   const toArray = () => Promise.resolve(toArrayResult);
   return {
     toArray
   };
 }
 
-export default MongoClient;
+module.exports = {
+  MongoClient,
+  db,
+  connect,
+  collection,
+  findResult
+};

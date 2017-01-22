@@ -1,10 +1,10 @@
-import config from '../config';
-import getLogger from '../logger';
-import path from 'path';
-import fs from 'fs-extra';
-import express from 'express';
-import bodyParser from 'body-parser';
-import serveStatic from 'serve-static';
+const { config } = require('../config');
+const { getLogger } = require('../logger');
+const path = require('path');
+const fs = require('fs-extra');
+const express = require('express');
+const bodyParser = require('body-parser');
+const serveStatic = require('serve-static');
 
 
 const logger = getLogger({
@@ -12,16 +12,13 @@ const logger = getLogger({
   filePath: 'webserver.log.path'
 });
 
-/**
- * @constant Server
- * @memberof module:server
- * @description The webserver.
- */
-const Server = {};
+
+const Server = module.exports = {};
 
 
 /**
  * @memberof module:server
+ * @alias setUpStaticServer
  * @param {App} app
  * @returns {App} - the same app instance that was supplied as argument
  */
@@ -45,6 +42,7 @@ Server.setUpStaticServer = function(app) {
 
 /**
  * @memberof module:server
+ * @alias startWebServer
  * @description Starts the entire web-server
  */
 Server.startWebServer = function() {
@@ -61,6 +59,7 @@ Server.startWebServer = function() {
 
 /**
  * @memberof module:server
+ * @alias handleServerStart
  * @description Handle server start event. Empty for now.
  */
 Server.handleServerStart = function() {
@@ -69,4 +68,4 @@ Server.handleServerStart = function() {
 };
 
 
-export default Server;
+module.exports = Server;
