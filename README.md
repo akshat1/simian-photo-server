@@ -1,22 +1,15 @@
-# simian-photo-server
+# Simian Photo Server
+Simian photo server (SPS from now on) is a self-hosted photograph organizer. It started as something to do in the two weeks I had between leaving one job and starting another. That first version is saved in the git tag "as-blogged-in-aug-2016". As you might imagine the first version was a little rough around the edges even though it worked. So I'm rewriting SPS in my free time.
 
-A node based photo server
+At the moment the current version is not usable, but that will change in near future.
 
-# Did you come here from my blog post?
-I recently decided to rewrite from scratch. The working version referenced in blog article from 18th August 2016 on akshatsharma.com is preserved in the tag "as-blogged-in-aug-2016".
+## Technical info and documentation
 
-# Requirements
-- node (>= 6.7)
-- ImageMagick
-- ExifTool
-- A mongodb server instance
+- [JSDoc](https://akshatmedia.com/simian-photo-server/docs/)
+- [Coverage](https://akshatmedia.com/simian-photo-server/coverage/)
+- [Code metrics](https://akshatmedia.com/simian-photo-server/plato/)
 
-# Building and running
-### To Clean
-`npm run clean` or, `gulp clean-all`
+## News and updates
 
-### To Build
-`npm run build` or, `gulp build-all`
-
-### To execute
-`npm run start-all`
+- [my blog](http://akshatsharma.com)
+- [@SimiaCode](https://twitter.com/SimiaCode)
