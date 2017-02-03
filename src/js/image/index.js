@@ -1,6 +1,6 @@
 /**
  * @module image
- * Utilities functions to work with image files.
+ * @description Utilities functions to work with image files.
  */
 const path = require('path');
 const childProcess = require('child_process');

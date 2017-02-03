@@ -1,5 +1,6 @@
 /**
  * @module crawler
+ * @description
  * - Walks the fils system looking for pictures and stores them into the DB
  * - Runs as a separate process
  */
