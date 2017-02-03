@@ -58,5 +58,8 @@ describe('logger', function() {
       _winstonLogger.error.firstCall.args.should.eql(['qux']);
     });
 
+    it('tests that _getTransports provides a file transport and a console transport');
+    it('tests that _getTransports provides uses level if level is a string and level.<transport name> otherwise');
+
   });
 });
