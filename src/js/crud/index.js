@@ -18,26 +18,16 @@ const logger = getLogger({
  * @memberof module:model
  */
 const GroupType = {
-  DIRECTORY: 1
+  directory: 1
 };
-
-
-/**
- * @typedef {Object} Group
- * @memberof module:crud
- * @property {string} name - name of the group
- * @property {GroupType} type - type of the group
- * @property {number[]} pictureIds - ids of the various pictures in this group
- * @property {number} _id - id, populated by mongo
- */
 
 
 /**
  * @typedef {Object} Picture
  * @memberof module:crud
  * @property {string} filePath
- * @property {string} thumbnailFileName
- * @property {string} previewFileName
+ * @property {string} thumbnailName
+ * @property {string} previewName
  * @property {number} rating
  * @property {Object} metadata
  */
@@ -58,8 +48,8 @@ const Crud = module.exports = {
  * @description an enumeration of collection names.
  */
 Crud.CollectionName = {
-  Groups: 'groups',
-  Pictures: 'pictures'
+  groups: 'groups',
+  pictures: 'pictures'
 };
 
 
@@ -93,17 +83,22 @@ Crud.connect = function connect() {
  * @return {Promise}
  */
 Crud.initialise = function initialise() {
+  logger.debug('initialise collections');
   if (Crud.isInitialised) {
+    logger.debug('already initialised');
     return Promise.resolve();
   }
 
   return Crud
     .connect()
     .then(function(db) {
+      logger.debug('getting collections');
       for (const key in Crud.CollectionName) {
-        Crud.collections[key] = db.collection(key);
-        Crud.isInitialised = true;
+        const collectionName = Crud.CollectionName[key]
+        logger.debug('collectionName: ', collectionName);
+        Crud.collections[collectionName] = db.collection(collectionName);
       }
+      Crud.isInitialised = true;
     });
 };
 
@@ -121,7 +116,7 @@ Crud.getGroups = function getGroups(query = {}) {
     .initialise()
     .then(function() {
       return Crud
-        .collections[Crud.CollectionName.Groups]
+        .collections[Crud.CollectionName.groups]
         .find(query)
         .toArray();
     });
@@ -141,8 +136,15 @@ Crud.putGroups = function putGroups(groups = []) {
   return Crud
     .initialise()
     .then(function() {
-      const collection = Crud.collections[Crud.CollectionName.Groups];
-      const promises = groups.map(group => collection.update({}, group, { upsert: true }));
+      const collection = Crud.collections[Crud.CollectionName.groups];
+      if (!collection) {
+        throw new Error(`Missing collection ${Crud.CollectionName.groups}`);
+      }
+      const promises = groups.map(function(group) {
+        return collection.update({
+          dirPath: group.dirPath
+        }, group, { upsert: true })
+      });
       return Promise
         .all(promises)
         .then(() => Promise.resolve(groups));
@@ -163,7 +165,7 @@ Crud.getPictures = function getPictures(query) {
     .initialise()
     .then(function() {
       return Crud
-        .collections[Crud.CollectionName.Pictures]
+        .collections[Crud.CollectionName.pictures]
         .find(query)
         .toArray();
     });
@@ -182,8 +184,15 @@ Crud.putPictures = function putPictures(pictures = []) {
   return Crud
     .initialise()
     .then(function() {
-      const collection = Crud.collections[Crud.CollectionName.Pictures];
-      const promises = pictures.map(picture => collection.update({}, picture, { upsert: true }));
+      const collection = Crud.collections[Crud.CollectionName.pictures];
+      if (!collection) {
+        throw new Error(`Missing collection ${Crud.CollectionName.pictures}`);
+      }
+      const promises = pictures.map(function(picture) {
+        return collection.update({
+            filePath: picture.filePath
+          }, picture, { upsert: true });
+      });
       return Promise
         .all(promises)
         .then(() => Promise.resolve(pictures));

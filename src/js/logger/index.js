@@ -32,12 +32,12 @@ const Logger = module.exports = {};
 Logger._getTransports = function _getTransports({ filePath, level = {} }) {
   return [
     new winston.transports.Console({
-      level: level.console,
+      level: typeof level === 'string' ? level : level.console,
       colorize: true,
       exitOnError: false
     }),
     new winston.transports.File({
-      level: level.file || 'debug',
+      level: typeof level === 'string' ? level : level.file,
       filename: filePath,
       exitOnError: false
     })

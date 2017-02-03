@@ -104,7 +104,7 @@ describe('crud', function() {
       findResult
     } = require('../mock/mongodb');
     const fakeCollection = collection(findResult('foo'));
-    Crud.collections[Crud.CollectionName.Groups] = fakeCollection;
+    Crud.collections[Crud.CollectionName.groups] = fakeCollection;
     return Crud
       .getGroups('bar')
       .then(function(result) {
@@ -121,7 +121,7 @@ describe('crud', function() {
     Crud.initialise.returns(Promise.resolve());
     const { collection } = require('../mock/mongodb');
     const fakeCollection = collection();
-    Crud.collections[Crud.CollectionName.Groups] = fakeCollection;
+    Crud.collections[Crud.CollectionName.groups] = fakeCollection;
     return Crud
       .putGroups(['a', 'b', 'c'])
       .then(function(result) {
@@ -144,7 +144,7 @@ describe('crud', function() {
       findResult
     } = require('../mock/mongodb');
     const fakeCollection = collection(findResult('foo'));
-    Crud.collections[Crud.CollectionName.Pictures] = fakeCollection;
+    Crud.collections[Crud.CollectionName.pictures] = fakeCollection;
     return Crud
       .getPictures('bar')
       .then(function(result) {
@@ -161,7 +161,7 @@ describe('crud', function() {
     Crud.initialise.returns(Promise.resolve());
     const { collection } = require('../mock/mongodb');
     const fakeCollection = collection();
-    Crud.collections[Crud.CollectionName.Pictures] = fakeCollection;
+    Crud.collections[Crud.CollectionName.pictures] = fakeCollection;
     return Crud
       .putPictures(['a', 'b', 'c'])
       .then(function(result) {

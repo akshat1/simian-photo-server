@@ -10,5 +10,7 @@ npm-debug.log
 /crawler/
 /server/
 /public/
-.nyc_output/
+/.preview/
+/.thumbnails/
+/.nyc_output/
 logger.log
