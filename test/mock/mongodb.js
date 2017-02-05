@@ -23,7 +23,8 @@ function collection(findResult) {
 
   return {
     find,
-    update
+    update,
+    remove: sinon.stub()
   };
 }
 
@@ -35,10 +36,17 @@ function findResult(toArrayResult) {
   };
 }
 
+function resetAll() {
+  connect.reset();
+  db.collection.reset();
+}
+
+
 module.exports = {
   MongoClient,
   db,
   connect,
   collection,
-  findResult
+  findResult,
+  resetAll
 };

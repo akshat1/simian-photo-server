@@ -2,6 +2,7 @@ const mockery = require('mockery');
 const sinon = require('sinon');
 const chai = require('chai');
 const hashes = require('node-hashes');
+const StubManager = require('../mock/stub-manager.js');
 chai.should();
 
 const THUMBNAIL_DIR_PATH = 'THUMBNAIL_DIR_PATH';
@@ -10,14 +11,6 @@ const THUMBNAIL_WIDTH = 400;
 const THUMBNAIL_HEIGHT = 300;
 const PREVIEW_WIDTH = 800;
 const PREVIEW_HEIGHT = 600;
-
-const stubs = [];
-function stubMethod (obj, methodName) {
-  const stub = sinon.stub(obj, methodName);
-  stubs.push(stub);
-  return stub;
-}
-
 
 describe('crawler', function() {
   let Crawler;
@@ -65,7 +58,7 @@ describe('crawler', function() {
   afterEach(function() {
     config.reset();
     fs.reset();
-    stubs.forEach(stub => stub.restore()),
+    StubManager.restoreAll();
     walk.resetAll();
     Crud.resetAll();
     Image.resetAll();
@@ -75,7 +68,7 @@ describe('crawler', function() {
   it('scanAll', function() {
     const fakeRoots = ['foo', 'bar', 'baz'];
     config.withArgs('system.fs.directories').returns(fakeRoots);
-    const _startWalking = stubMethod(Crawler, 'startWalking');
+    const _startWalking = StubManager.stub(Crawler, 'startWalking');
     _startWalking.returns(Promise.resolve());
     return Crawler
       .scanAll()
@@ -98,7 +91,7 @@ describe('crawler', function() {
 
 
   it('startWalking', function() {
-    const _prepFileSystem = stubMethod(Crawler, 'prepFileSystem');
+    const _prepFileSystem = StubManager.stub(Crawler, 'prepFileSystem');
     walk.walker.on.withArgs('end').callsArg(1);
     return Crawler
       .startWalking('FOO')
@@ -226,7 +219,7 @@ describe('crawler', function() {
     };
     const next = sinon.stub();
     Image.isImageFile.returns(Promise.resolve(false));
-    stubMethod(Crawler, 'saveDirectoryIfNeeded');
+    StubManager.stub(Crawler, 'saveDirectoryIfNeeded');
     return Crawler
       .handleFile(root, fileStats, next)
       .then(function() {
@@ -245,8 +238,8 @@ describe('crawler', function() {
       name: fileName
     };
     const next = sinon.stub();
-    stubMethod(Crawler, 'saveDirectoryIfNeeded');
-    stubMethod(Crawler, 'isNewFile');
+    StubManager.stub(Crawler, 'saveDirectoryIfNeeded');
+    StubManager.stub(Crawler, 'isNewFile');
     Image.isImageFile.returns(Promise.resolve(true));
     Crawler.isNewFile.returns(Promise.resolve(false));
     return Crawler
@@ -271,8 +264,8 @@ describe('crawler', function() {
     };
     const next = sinon.stub();
     const exif = {};
-    stubMethod(Crawler, 'saveDirectoryIfNeeded');
-    stubMethod(Crawler, 'isNewFile');
+    StubManager.stub(Crawler, 'saveDirectoryIfNeeded');
+    StubManager.stub(Crawler, 'isNewFile');
     Image.isImageFile.returns(Promise.resolve(true));
     Image.getExif.returns(Promise.resolve(exif));
     Image.resize.returns(Promise.resolve());

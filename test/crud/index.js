@@ -1,37 +1,51 @@
+const StubManager = require('../mock/stub-manager.js');
 import mockery from 'mockery';
 import sinon from 'sinon';
 import chai from 'chai';
 chai.should();
 
-const crudModulePath = '../../src/js/crud/index.js';
-
 
 describe('crud', function() {
-  afterEach(function() {
-    mockery.deregisterAll();
-    mockery.disable();
-  });
+  let Crud,
+      config,
+      logger,
+      mongodb;
 
-
-  beforeEach(function() {
+  before(function() {
     mockery.enable({
       useCleanCache: true,
       warnOnUnregistered: false
     });
 
-    mockery.registerSubstitute('../config', '../../../test/mock/config');
-    mockery.registerSubstitute('../logger', '../../../test/mock/logger');
-    mockery.registerSubstitute('mongodb', '../../../test/mock/mongodb');
-    mockery.registerAllowable(crudModulePath);
+    const oConfig = require('../mock/config');
+    config = oConfig.config;
+    logger = require('../mock/logger');
+    mongodb = require('../mock/mongodb');
+    mockery.registerMock('../config', oConfig);
+    mockery.registerMock('../logger', logger);
+    mockery.registerMock('mongodb', mongodb);
+
+    Crud = require('../../src/js/crud/index.js')
+  });
+
+
+  after(function() {
+    mockery.deregisterAll();
+    mockery.disable();
+  });
+
+
+  afterEach(function() {
+    config.reset();
+    logger.logger.reset();
+    mongodb.resetAll();
+    StubManager.restoreAll();
   });
 
 
   it('tests connect should connect to the db', function() {
     const dbURL = 'D-B-U-R-L';
-    const mongodb = require('../mock/mongodb');
-    const { config } = require('../mock/config');
     config.withArgs('db.url').returns(dbURL);
-    const Crud = require(crudModulePath);
     return Crud.connect()
       .then(function(result) {
         mongodb.MongoClient.connect.calledWith(dbURL);
@@ -44,14 +58,10 @@ describe('crud', function() {
 
   it('tests connect does not try to connect if already connected', function() {
     const dbURL = 'D-B-U-R-L';
-    const mongodb = require('../mock/mongodb');
-    const { config } = require('../mock/config');
     config.withArgs('db.url').returns(dbURL);
-    const Crud = require(crudModulePath);
     Crud.db = 'foo';
     return Crud.connect()
       .then(function(result) {
-        mongodb.MongoClient.connect.callCount.should.equal(0);
         mongodb.MongoClient.connect.callCount.should.equal(0);
         result.should.equal('foo');
       });
@@ -60,11 +70,9 @@ describe('crud', function() {
 
   it('tests initialise creates collections and sets flag', function() {
     // should create db collections for all the items named in the collections enum
-    const mongodb = require('../mock/mongodb');
     const db = mongodb.db;
-    const Crud = require(crudModulePath);
     db.collection.returns(Promise.resolve('-a-collection-'));
-    Crud.connect = sinon.stub();
+    StubManager.stub(Crud, 'connect');
     Crud.connect.returns(Promise.resolve(db));
     return Crud
       .initialise()
@@ -79,10 +87,8 @@ describe('crud', function() {
 
 
   it('tests initialise does not call connect if already initialised', function() {
-    const mongodb = require('../mock/mongodb');
-    const Crud = require(crudModulePath);
     Crud.isInitialised = true;
-    Crud.connect = sinon.stub();
+    StubManager.stub(Crud, 'connect');
     Crud.connect.returns(Promise.resolve('bar'));
     const db = mongodb.db;
     db.collection.returns(Promise.resolve('-a-collection-'));
@@ -96,13 +102,12 @@ describe('crud', function() {
 
 
   it('tests getGroups', function() {
-    const Crud = require(crudModulePath);
-    Crud.initialise = sinon.stub();
+    StubManager.stub(Crud, 'initialise');
     Crud.initialise.returns(Promise.resolve());
     const {
       collection,
       findResult
-    } = require('../mock/mongodb');
+    } = mongodb;
     const fakeCollection = collection(findResult('foo'));
     Crud.collections[Crud.CollectionName.groups] = fakeCollection;
     return Crud
@@ -116,10 +121,9 @@ describe('crud', function() {
 
 
   it('tests putGroups', function() {
-    const Crud = require(crudModulePath);
-    Crud.initialise = sinon.stub();
+    StubManager.stub(Crud, 'initialise');
     Crud.initialise.returns(Promise.resolve());
-    const { collection } = require('../mock/mongodb');
+    const { collection } = mongodb;
     const fakeCollection = collection();
     Crud.collections[Crud.CollectionName.groups] = fakeCollection;
     return Crud
@@ -135,14 +139,39 @@ describe('crud', function() {
   });
 
 
+  it('tests deleteGroups with no query', function(done) {
+    const getCollection = StubManager.stub(Crud, 'getCollection');
+    const { collection } = mongodb;
+    const fakeCollection = collection();
+    getCollection.returns(fakeCollection);
+    Crud.deleteGroups()
+      .catch(function(err) {
+        err.should.be.an('error');
+        done();
+      });
+  });
+
+
+  it('tests deleteGroups with invalid query', function(done) {
+    const getCollection = StubManager.stub(Crud, 'getCollection');
+    const { collection } = mongodb;
+    const fakeCollection = collection();
+    getCollection.returns(fakeCollection);
+    Crud.deleteGroups({})
+      .catch(function(err) {
+        err.should.be.an('error');
+        done();
+      });
+  });
+
+
   it('tests getPictures', function() {
-    const Crud = require(crudModulePath);
-    Crud.initialise = sinon.stub();
+    StubManager.stub(Crud, 'initialise');
     Crud.initialise.returns(Promise.resolve());
     const {
       collection,
       findResult
-    } = require('../mock/mongodb');
+    } = mongodb;
     const fakeCollection = collection(findResult('foo'));
     Crud.collections[Crud.CollectionName.pictures] = fakeCollection;
     return Crud
@@ -156,10 +185,9 @@ describe('crud', function() {
 
 
   it('tests putPictures', function() {
-    const Crud = require(crudModulePath);
-    Crud.initialise = sinon.stub();
+    StubManager.stub(Crud, 'initialise');
     Crud.initialise.returns(Promise.resolve());
-    const { collection } = require('../mock/mongodb');
+    const { collection } = mongodb;
     const fakeCollection = collection();
     Crud.collections[Crud.CollectionName.pictures] = fakeCollection;
     return Crud
@@ -171,6 +199,32 @@ describe('crud', function() {
         fakeCollection.update.calledWith('c');
         fakeCollection.update.callCount.should.equal(3);
         result.should.eql(['a', 'b', 'c']);
+      });
+  });
+
+
+  it('tests deletePictures with no query', function(done) {
+    const getCollection = StubManager.stub(Crud, 'getCollection');
+    const { collection } = mongodb;
+    const fakeCollection = collection();
+    getCollection.returns(fakeCollection);
+    Crud.deletePictures()
+      .catch(function(err) {
+        err.should.be.an('error');
+        done();
+      });
+  });
+
+
+  it('tests deletePictures with invalid query', function(done) {
+    const getCollection = StubManager.stub(Crud, 'getCollection');
+    const { collection } = mongodb;
+    const fakeCollection = collection();
+    getCollection.returns(fakeCollection);
+    Crud.deletePictures({})
+      .catch(function(err) {
+        err.should.be.an('error');
+        done();
       });
   });
 });
