@@ -5,7 +5,6 @@
  * - Runs as a separate process
  */
 
-require('babel-polyfill');
 const walk = require('walk');
 const path = require('path');
 const fs = require('fs-extra');

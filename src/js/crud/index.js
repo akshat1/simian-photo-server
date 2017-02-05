@@ -59,19 +59,16 @@ Crud.CollectionName = {
  * @memberof module:crud
  * @returns {Promise}
  */
-Crud.connect = function connect() {
+Crud.connect = async function connect() {
   if (!Crud.db) {
     const url = config('db.url');
     logger.debug(`connecting to db at ${url}`);
-    return MongoClient
-      .connect(url)
-      .then(function(db) {
-        Crud.db = db;
-        return db;
-      });
+    const db = await MongoClient.connect(url);
+    Crud.db = db;
+    return db;
   }
 
-  return Promise.resolve(Crud.db);
+  return Crud.db;
 };
 
 
@@ -82,25 +79,48 @@ Crud.connect = function connect() {
  * @memberof module:crud
  * @return {Promise}
  */
-Crud.initialise = function initialise() {
+Crud.initialise = async function initialise() {
   logger.debug('initialise collections');
   if (Crud.isInitialised) {
     logger.debug('already initialised');
-    return Promise.resolve();
+    return;
   }
 
-  return Crud
-    .connect()
-    .then(function(db) {
-      logger.debug('getting collections');
-      for (const key in Crud.CollectionName) {
-        const collectionName = Crud.CollectionName[key]
-        logger.debug('collectionName: ', collectionName);
-        Crud.collections[collectionName] = db.collection(collectionName);
-      }
-      Crud.isInitialised = true;
-    });
+  const db = await Crud.connect();
+  logger.debug('getting collections');
+  for (const key in Crud.CollectionName) {
+    const collectionName = Crud.CollectionName[key]
+    logger.debug('collectionName: ', collectionName);
+    Crud.collections[collectionName] = db.collection(collectionName);
+  }
+
+  Crud.isInitialised = true;
 };
+
+
+/**
+ * Used by he crud functions to obtain the collection they need. Takes
+ * care of initializing the module and throwing errors for missing
+ * collections. Makes code more streamlined.
+ * @alias getCollection
+ * @memberof module:crud
+ * @param {string} collectionName - The collection desired
+ * @returns {Promise} - A promise that resolves in a MongoDB collection
+ */
+Crud.getCollection = async function getCollection(collectionName) {
+  logger.debug(`getCollection(${collectionName})`)
+  if (typeof collectionName !== 'string') {
+    throw new Error('Invalid argument to getCollection. Expected string.');
+  }
+
+  await Crud.initialise();
+  const collection = Crud.collections[collectionName];
+  if (!collection) {
+    throw new Error(`Missing collection ${collectionName}`);
+  }
+
+  return collection;
+}
 
 
 /**
@@ -110,16 +130,10 @@ Crud.initialise = function initialise() {
  * @memberof module:crud
  * @returns {Promise} - A promise that resolves in an array of Group objects
  */
-Crud.getGroups = function getGroups(query = {}) {
+Crud.getGroups = async function getGroups(query = {}) {
   logger.debug('getGroups', { query });
-  return Crud
-    .initialise()
-    .then(function() {
-      return Crud
-        .collections[Crud.CollectionName.groups]
-        .find(query)
-        .toArray();
-    });
+  const collection = await Crud.getCollection(Crud.CollectionName.groups);
+  return collection.find(query).toArray();
 };
 
 
@@ -132,24 +146,33 @@ Crud.getGroups = function getGroups(query = {}) {
  * @returns {Promise} -  a promise that resolves with the same groups that were stored once they
  *   have been stored.
  */
-Crud.putGroups = function putGroups(groups = []) {
-  return Crud
-    .initialise()
-    .then(function() {
-      const collection = Crud.collections[Crud.CollectionName.groups];
-      if (!collection) {
-        throw new Error(`Missing collection ${Crud.CollectionName.groups}`);
-      }
-      const promises = groups.map(function(group) {
-        return collection.update({
-          dirPath: group.dirPath
-        }, group, { upsert: true })
-      });
-      return Promise
-        .all(promises)
-        .then(() => Promise.resolve(groups));
-    });
+Crud.putGroups = async function putGroups(groups = []) {
+  const collection = await Crud.getCollection(Crud.CollectionName.groups);
+  const promises = groups.map(function(group) {
+    return collection.update({
+      dirPath: group.dirPath
+    }, group, { upsert: true })
+  });
+
+  await Promise.all(promises);
+  return groups;
 };
+
+
+/**
+ * Delete groups that match the provided query.
+ * @param {Object} query - Mongodb query
+ * @returns {Promise} - resolves into the number of groups deleted
+ */
+Crud.deleteGroups = async function deleteGroups(query) {
+  logger.debug('deleteGroups(..)', query);
+  if (!query || !Object.keys(query).length) {
+    throw new Error('Invalid argument to deleteGroups()');
+  }
+  const collection = await Crud.getCollection(Crud.CollectionName.groups);
+  const {nRemoved} = await collection.remove(query);
+  return nRemoved;
+}
 
 
 /**
@@ -159,16 +182,10 @@ Crud.putGroups = function putGroups(groups = []) {
  * @param {Object} query
  * @returns {Promise} - A promise that resolves into an array of Picture objects.
  */
-Crud.getPictures = function getPictures(query) {
+Crud.getPictures = async function getPictures(query) {
   logger.debug('getPictures', { query });
-  return Crud
-    .initialise()
-    .then(function() {
-      return Crud
-        .collections[Crud.CollectionName.pictures]
-        .find(query)
-        .toArray();
-    });
+  const collection = await Crud.getCollection(Crud.CollectionName.pictures);
+  return collection.find(query).toArray();
 };
 
 
@@ -180,21 +197,30 @@ Crud.getPictures = function getPictures(query) {
  * @returns {Promise} -  a promise that resolves with the same pictures that were stored once they
  *   have been stored.
  */
-Crud.putPictures = function putPictures(pictures = []) {
-  return Crud
-    .initialise()
-    .then(function() {
-      const collection = Crud.collections[Crud.CollectionName.pictures];
-      if (!collection) {
-        throw new Error(`Missing collection ${Crud.CollectionName.pictures}`);
-      }
-      const promises = pictures.map(function(picture) {
-        return collection.update({
-            filePath: picture.filePath
-          }, picture, { upsert: true });
-      });
-      return Promise
-        .all(promises)
-        .then(() => Promise.resolve(pictures));
-    });
+Crud.putPictures = async function putPictures(pictures = []) {
+  const collection = await Crud.getCollection(Crud.CollectionName.pictures);
+  const promises = pictures.map(function(picture) {
+    return collection.update({
+        filePath: picture.filePath
+      }, picture, { upsert: true });
+  });
+
+  await Promise.all(promises);
+  return pictures;
 };
+
+
+/**
+ * Delete pictures that match the provided query.
+ * @param {Object} query - Mongodb query
+ * @returns {Promise} - resolves into the number of pictures deleted
+ */
+Crud.deletePictures = async function deletePictures(query) {
+  logger.debug('deletePictures(..)', query);
+  if (!query || !Object.keys(query).length) {
+    throw new Error('Invalid argument to deletePictures()');
+  }
+  const collection = await Crud.getCollection(Crud.CollectionName.pictures);
+  const {nRemoved} = await collection.remove(query);
+  return nRemoved;
+}
