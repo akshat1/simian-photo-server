@@ -6,7 +6,6 @@ const { MongoClient } = require('mongodb');
 const { config } = require('../config');
 const { getLogger } = require('../logger');
 
-
 const logger = getLogger({
   level: config('crud.log.level'),
   filePath: config('crud.log.path')
@@ -49,7 +48,8 @@ const Crud = module.exports = {
  */
 Crud.CollectionName = {
   groups: 'groups',
-  pictures: 'pictures'
+  pictures: 'pictures',
+  groupContents: 'groupContents' // {groupId, [pictureId]}
 };
 
 
@@ -99,7 +99,7 @@ Crud.initialise = async function initialise() {
 
 
 /**
- * Used by he crud functions to obtain the collection they need. Takes
+ * Used by the crud functions to obtain the collection they need. Takes
  * care of initializing the module and throwing errors for missing
  * collections. Makes code more streamlined.
  * @alias getCollection
@@ -120,20 +120,112 @@ Crud.getCollection = async function getCollection(collectionName) {
   }
 
   return collection;
-}
+};
 
 
 /**
- * @param {Object} query - the query to get groups with. As meant for mongo db
+ * @param {string} collectionName - NAme of the collection to retrieve records from.
+ * @param {Object} query - the query to get records with. As meant for mongodb
  *   `collection.find()`.
+ * @param {Object} [opts] - Options.
+ * @param {Object} [opts.pagination] - Pagination options. (See Mongo docs for `cursor.skip()`
+      and `cursor.limit()`)
+ * @param {number} opts.pagination.skip - number of records to skip
+ * @param {number} opts.pagination.limit - number of records to return
+ * @param {Object} [opts.sort] - Sort options (See Mongo docs for `cursor.sort`)
+ * @param {Object} [opts.projection] - Specifies the field to return (See Mongo docs for `collection.find`)
+ * @param {boolean} [opts.includeSupplemental=false] - If true return value will include description of
+ *    sort, pagination, totals etc.
+ * @see https://docs.mongodb.com/manual/reference/method/db.collection.find/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.skip/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.limit/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.sort/
  * @alias getGroups
  * @memberof module:crud
  * @returns {Promise} - A promise that resolves in an array of Group objects
  */
-Crud.getGroups = async function getGroups(query = {}) {
+Crud.getItems = async function getItems(collectionName, query = {}, opts = {}) {
+  logger.debug('getItems(...)', query);
+  const {
+    pagination,
+    sort,
+    projection,
+    includeSupplemental
+  } = opts;
+  const collection = await Crud.getCollection(collectionName);
+  const cursor = collection.find(query, projection);
+  const totalRecords = await cursor.count();
+
+  if (sort) {
+    cursor.sort(sort);
+  }
+
+  if (pagination) {
+    if (typeof pagination.skip === 'number') {
+      cursor.skip(pagination.skip);
+    }
+
+    if (typeof pagination.limit === 'number') {
+      cursor.limit(pagination.limit);
+    }
+  }
+
+  if (includeSupplemental) {
+    const data = await cursor.toArray()
+    const result = {
+      data,
+      pagination: {
+        ...pagination,
+        total: totalRecords,
+        returned: data.length
+      },
+      sort: { ...sort }
+    };
+
+    return result;
+  }
+
+  return cursor.toArray();
+};
+
+
+/**
+ * Delete items from the named collection.
+ * @param {string} collectionName - name of the collection to delete stuff from
+ * @param {Object} query
+ * @returns {Promise} - a promise that results in a Mongo write concern
+ */
+Crud.deleteItems = async function deleteItems(collectionName, query) {
+  logger.debug(`deleteItems(${collectionName})`, query);
+  if (!query || !Object.keys(query).length) {
+    throw new Error('Invalid argument to deleteItems()');
+  }
+  const collection = await Crud.getCollection(collectionName);
+  const {nRemoved} = await collection.remove(query);
+  return nRemoved;
+}
+
+
+/**
+ * @param {Object} query - the query to get groups with. As meant for mongodb
+ *   `collection.find()`.
+ * @param {Object} [opts] - Options.
+ * @param {Object} [opts.pagination] - Pagination options. Supply Falsie for no pagination.
+ * @param {number} opts.pagination.skip - number of records to skip
+ * @param {number} opts.pagination.limit - page-size; number of records to return
+ * @param {Object} [opts.sort] - Sort options
+ * @param {boolean} [opts.includeSupplemental=false] - If true return value will include description of
+ *    sort, pagination, totals etc.
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.skip/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.limit/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.sort/
+ * @alias getGroups
+ * @memberof module:crud
+ * @returns {Promise} - A promise that resolves in an array of Group objects
+ */
+Crud.getGroups = function getGroups(query = {}, opts = {}) {
   logger.debug('getGroups', { query });
-  const collection = await Crud.getCollection(Crud.CollectionName.groups);
-  return collection.find(query).toArray();
+  return Crud.getItems(Crud.CollectionName.groups, query, opts);
 };
 
 
@@ -164,28 +256,32 @@ Crud.putGroups = async function putGroups(groups = []) {
  * @param {Object} query - Mongodb query
  * @returns {Promise} - resolves into the number of groups deleted
  */
-Crud.deleteGroups = async function deleteGroups(query) {
+Crud.deleteGroups = function deleteGroups(query) {
   logger.debug('deleteGroups(..)', query);
-  if (!query || !Object.keys(query).length) {
-    throw new Error('Invalid argument to deleteGroups()');
-  }
-  const collection = await Crud.getCollection(Crud.CollectionName.groups);
-  const {nRemoved} = await collection.remove(query);
-  return nRemoved;
+  return Crud.deleteItems(Crud.CollectionName.groups, query);
 }
 
 
 /**
- * Get an array of pictures.
- * @alias getPictures
+ * @param {Object} query - the query to get pictures with. As meant for mongodb
+ *   `collection.find()`.
+ * @param {Object} [opts] - Options.
+ * @param {Object} [opts.pagination] - Pagination options. Supply Falsie for no pagination.
+ * @param {number} opts.pagination.skip - number of records to skip
+ * @param {number} opts.pagination.limit - page-size; number of records to return
+ * @param {Object} [opts.sort] - Sort options
+ * @param {boolean} [opts.includeSupplemental=false] - If true return value will include description of
+ *    sort, pagination, totals etc.
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.skip/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.limit/
+ * @see https://docs.mongodb.com/manual/reference/method/cursor.sort/
+ * @alias getGroups
  * @memberof module:crud
- * @param {Object} query
- * @returns {Promise} - A promise that resolves into an array of Picture objects.
+ * @returns {Promise} - A promise that resolves in an array of Picture objects
  */
-Crud.getPictures = async function getPictures(query) {
-  logger.debug('getPictures', { query });
-  const collection = await Crud.getCollection(Crud.CollectionName.pictures);
-  return collection.find(query).toArray();
+Crud.getPictures = async function getPictures(query, opts) {
+  logger.debug('getGroups', { query });
+  return Crud.getItems(Crud.CollectionName.pictures, query, opts);
 };
 
 
@@ -215,12 +311,39 @@ Crud.putPictures = async function putPictures(pictures = []) {
  * @param {Object} query - Mongodb query
  * @returns {Promise} - resolves into the number of pictures deleted
  */
-Crud.deletePictures = async function deletePictures(query) {
+Crud.deletePictures = function deletePictures(query) {
   logger.debug('deletePictures(..)', query);
-  if (!query || !Object.keys(query).length) {
-    throw new Error('Invalid argument to deletePictures()');
-  }
-  const collection = await Crud.getCollection(Crud.CollectionName.pictures);
-  const {nRemoved} = await collection.remove(query);
-  return nRemoved;
+  return Crud.deleteItems(Crud.CollectionName.pictures, query);
+}
+
+
+/**
+ * Associate pictures with a group using mongo's _id object-id.
+ * @param {string} groupId - group._id (from mongo)
+ * @param {string[]} pictureId - array of picture._id (from mongo)
+ */
+Crud.putPicturesInGroup = async function putPicturesInGroup(groupId, ...pictureIds) {
+  logger.debug(`associate(${groupId}, ...)`, pictureIds);
+  const collection = await Crud.getCollection(Crud.CollectionName.groupContents);
+  const query = { groupId };
+  const record = (await collection.find(query).toArray())[0] || {groupId, pictureIds: []};
+  const setOfIds = new Set(record.pictureIds);
+  pictureIds.forEach((id) => setOfIds.add(id));
+  record.pictureIds = Array.from(setOfIds);
+  const result = await collection.update(query, record, {upsert: true});
+  return result;
+}
+
+
+/**
+ * get pictures associated in a group using the _id object-id field set by Mongo
+ * @param {string} groupId
+ * @returns {Promise} - A promise that resolves into an array of picture ids
+ */
+Crud.getPicturesInGroup = async function getPicturesInGroup(groupId) {
+  logger.debug(`getPicturesInGroup(${groupId})`);
+  const collection = await Crud.getCollection(Crud.CollectionName.groupContents);
+  const query = { groupId };
+  const record = (await collection.find(query).toArray())[0];
+  return record ? record.pictureIds : [];
 }

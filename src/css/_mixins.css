@@ -1,0 +1,12 @@
+@define-mixin focus {
+  &:focus {
+    box-shadow: 1px 1px 3px lighten($color-border, 5%);
+  };
+}
+
+
+@define-mixin disabled {
+  &[disabled] {
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,13 @@
+.debug-server {
+  backgrond: #CCC;
+
+  .debug-row {
+    border-bottom: 1px solid #777;
+
+    &.multiline {
+      label {
+        display: block;
+      }
+    }
+  }
+}
