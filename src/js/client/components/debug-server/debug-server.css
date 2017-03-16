@@ -1,0 +1,45 @@
+.debug-server {
+  backgrond: #CCC;
+
+  .debug-row {
+    padding: 20px;
+    @mixin flexBox row, , , center;
+
+    label {
+      @mixin flexItem 0, 0;
+      margin: 0 20px 0 0;
+      font-weight: bold;
+    }
+
+    input {
+      @mixin flexItem 1, 1;
+      padding: 5px;
+    }
+
+    textarea {
+      @mixin flexItem 1, 1;
+      padding: 5px;
+    }
+
+    .json-viewer {
+      @mixin flexItem 1, 1;
+      height: 400px;
+    }
+
+    .debug-row-rest {
+      @mixin flexItem 0, 0;
+      padding: 5px;
+    }
+
+    &.multiline {
+      height: 150px;
+      flex-direction: column;
+      align-items: stretch;
+
+      label {
+        margin: 0 0 10px 0;
+        display: block;
+      }
+    }
+  }
+}

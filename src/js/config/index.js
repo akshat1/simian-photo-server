@@ -12,9 +12,10 @@ const configFilePath = path.join(process.cwd(), 'config.json');
 const logDir = path.join(process.cwd(), 'log');
 const defaultConfig = {
   'log.level.default'             : 'debug',
-  'log.filePath'                  : path.join(logDir, 'server.log'),
   'webserver.root.path'           : '/public',
   'webserver.port'                : 8080,
+  'webserver.log.level'           : 'debug',
+  'webserver.log.path'            : path.join(logDir, 'server.log'),
   'app.thumbnail.path'            : '/tmp/thumbnails',
   'app.imagePreview.path'         : '/tmp/preview',
   'db.url'                        : 'mongodb://localhost:27017/simianPhotoServer',

@@ -80,21 +80,21 @@ const Crawler = module.exports = {
    * @param {string} dirPath
    * @returns {Promise}
    */
-  saveDirectoryIfNeeded: function saveDirectoryIfNeeded(dirPath) {
+  saveDirectoryIfNeeded: async function saveDirectoryIfNeeded(dirPath) {
     const dirName = path.basename(dirPath);
     logger.debug(`saveDirectoryIfNeeded(${dirPath})`)
-    if (!Crawler.directoryStoredFlags[dirPath]) {
-      return Crud.putGroups([{
-        name: dirName,
-        type: Crud.GroupType.directory,
-        dirPath
-      }])
-      .then(function() {
-        Crawler.directoryStoredFlags[dirPath] = true;
-      });
+    if (Crawler.directoryStoredFlags[dirPath]) {
+      return Crawler.directoryStoredFlags[dirPath];
     }
 
-    return Promise.resolve();
+    await Crud.putGroups([{
+      name: dirName,
+      type: Crud.GroupType.directory,
+      dirPath
+    }]);
+    const [group] = await Crud.getGroups({dirPath});
+    Crawler.directoryStoredFlags[dirPath] = group;
+    return group;
   },
 
 
@@ -138,9 +138,8 @@ const Crawler = module.exports = {
         const data = await Image.getExif(filePath);
         // We don't care about the order of completion of the following
         // Also, we want to continue our loop regardless of failures
-        await Promise.all([
-          Image.resize(filePath, thumbnailPath, thumbnailWidth, thumbnailHeight),
-          Image.resize(filePath, previewPath, previewWidth, previewHeight),
+        const [group] = await Promise.all([
+          Crawler.saveDirectoryIfNeeded(root),
           Crud.putPictures([{
             filePath,
             thumbnailPath,
@@ -148,8 +147,12 @@ const Crawler = module.exports = {
             metadata: data,
             fileStats
           }]),
-          Crawler.saveDirectoryIfNeeded(root)
+          Image.resize(filePath, thumbnailPath, thumbnailWidth, thumbnailHeight),
+          Image.resize(filePath, previewPath, previewWidth, previewHeight)
         ]);
+        const [picture] = await Crud.getPictures({filePath});
+        // We don't want to wait for this to finish
+        Crud.putPicturesInGroup(group._id.toString(), picture._id.toString());
       }
     } catch (err) {
       logger.error(`Error processing filePath: ${filePath}`, err);

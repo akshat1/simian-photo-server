@@ -15,9 +15,9 @@ const MongoClient = {
 };
 
 
-function collection(findResult) {
+function collection(cursor) {
   const find = sinon.stub();
-  find.returns(findResult);
+  find.returns(cursor);
 
   const update = sinon.spy(x => Promise.resolve(x));
 
@@ -29,17 +29,32 @@ function collection(findResult) {
 }
 
 
-function findResult(toArrayResult) {
-  const toArray = () => Promise.resolve(toArrayResult);
+function cursor(toArrayResult) {
+  const toArray = sinon.stub();
+  toArray.returns(Promise.resolve(toArrayResult));
+  const count = sinon.stub();
+  count.returns(Promise.resolve(toArrayResult.length));
   return {
-    toArray
+    toArray,
+    count,
+    sort: sinon.stub(),
+    skip: sinon.stub(),
+    limit: sinon.stub()
   };
 }
+
+
+const ObjectID = sinon.spy(function _ObjectID (value) {
+  return { value };
+});
+
 
 function resetAll() {
   connect.reset();
   db.collection.reset();
+  ObjectID.reset();
 }
+
 
 
 module.exports = {
@@ -47,6 +62,7 @@ module.exports = {
   db,
   connect,
   collection,
-  findResult,
+  cursor,
+  ObjectID,
   resetAll
 };

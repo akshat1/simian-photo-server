@@ -120,7 +120,9 @@ describe('crawler', function() {
 
   it('saveDirectoryIfNeeded - saves the first time around', function() {
     const dirPath = 'foo/bar/baz';
+    const storedDirectory = {};
     Crud.putGroups.returns(Promise.resolve());
+    Crud.getGroups.returns(Promise.resolve([storedDirectory]));
     (typeof Crawler.directoryStoredFlags[dirPath]).should.equal('undefined');
     return Crawler
       .saveDirectoryIfNeeded(dirPath)
@@ -133,7 +135,7 @@ describe('crawler', function() {
             dirPath
           }]
         ]);
-        Crawler.directoryStoredFlags[dirPath].should.equal(true);
+        Crawler.directoryStoredFlags[dirPath].should.equal(storedDirectory);
         delete Crawler.directoryStoredFlags[dirPath];
       });
   });

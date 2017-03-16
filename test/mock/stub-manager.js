@@ -9,11 +9,13 @@ const StubManager = {
 
   /**
    * @param {Object} obj - The object whose method is to be mocked
-   * @methodName {string} - NAme of the method to be stubbed
+   * @param {string} methodName - Name of the method to be stubbed
+   * @param {*} [returnValue] - Value to be returned (you can always change it later)
    */
-  stub: function (obj, methodName) {
+  stub: function (obj, methodName, returnValue) {
     const stub = sinon.stub(obj, methodName);
     this.stubs.push(stub);
+    stub.returns(returnValue);
     return stub;
   },
 

@@ -5,13 +5,13 @@ const client = {
 
   js: {
     src: ['src/js/**/*.js', 'src/js/**/*.jsx'],
-    entry: 'src/js/client/index.jsx',
+    entry: 'src/js/client/index.js',
     dest: 'public/js/app.js'
   },
 
   css: {
     src: ['src/css/**/*.css', '!src/css/**/_*.css'],
-    dest: 'public/css/app.css'
+    dest: 'public/css'
   },
 
   html: {
