@@ -3,18 +3,18 @@ import {
   applyMiddleware
   //,compose
 } from 'redux';
-import promiseMiddleware from 'redux-promise';
+import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from './reducers';
 
-const composeEnhancers = composeWithDevTools({});
+//const composeEnhancers = composeWithDevTools({})(thunkMiddleware);
 
 function configureStore() {
   return createStore(
     reducer,
-    composeEnhancers(
-      applyMiddleware(promiseMiddleware)
-    )
+    composeWithDevTools(applyMiddleware(thunkMiddleware))
+    // composeEnhancers
+    //
   );
 }
 

@@ -1,17 +1,28 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
+import { connect } from 'react-redux';
+import { fetchCollections } from './actions';
 
-const Home = () =>
-  <Provider store={store()}>
-    <div id='sps-home'>
-      HOME
-    </div>
-  </Provider>
+class Home extends React.Component {
+  componentWillMount() {
+    console.log('COMPONENT WILL MOUNT. YO.');
+    this.props.fetchCollections();
+  }
 
-export default Home;
+  render () {
+    return (
+      <div id='sps-home'>
+        HOME
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = () => ({})
+const mapDispatchToProps = {
+  fetchCollections
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
