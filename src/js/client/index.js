@@ -1,18 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import store from './store';
-import Home from './home.jsx'
+import Home from './components/Home.jsx'
 
 function startApp() {
   render(
     (<Provider store={store()}>
-      <Home />
+      <BrowserRouter basename='/app'>
+        <Home />
+      </BrowserRouter>
     </Provider>),
     document.getElementById('spsRoot')
   );

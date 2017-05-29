@@ -15,11 +15,6 @@ gulp.task('client', [
 ]);
 
 
-gulp.task('watch', function() {
-  gulp.watch(['src/js/client/**/*.js', 'src/js/client/**/*.jsx'], ['client']);
-});
-
-
 gulp.task('clean-client', function() {
   const del = require('del');
   return del([client.clean]);

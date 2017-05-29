@@ -30,6 +30,10 @@ Server.startWebServer = function() {
   const app = express();
   Server.setUpStaticServer(app);
   Server.setUpRestApi(app);
+  app.use('/', function(req, res) {
+    console.log(req);
+    res.redirect('/app');
+  });
   const listenPort = Number(config('webserver.port'));
   app.listen(listenPort, Server.handleServerStart);
   logger.info(`Listening at port: ${listenPort}`);
