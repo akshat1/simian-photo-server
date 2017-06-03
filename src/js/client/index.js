@@ -1,9 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { DebugServer } from './components/debug-server/index.jsx'
+import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
+import store from './store';
+import Home from './components/Home.jsx'
 
 function startApp() {
-  render(<DebugServer />, document.getElementById('spsRoot'));
+  render(
+    (<Provider store={store()}>
+      <HashRouter basename='/'>
+        <Home />
+      </HashRouter>
+    </Provider>),
+    document.getElementById('spsRoot')
+  );
 }
 
 document.addEventListener('DOMContentLoaded', startApp);
