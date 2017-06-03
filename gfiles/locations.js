@@ -10,7 +10,7 @@ const client = {
   },
 
   css: {
-    src: ['src/css/**/*.css', '!src/css/**/_*.css'],
+    src: ['src/css/app.less'],
     dest: 'public/css'
   },
 
