@@ -28,7 +28,7 @@ module.exports.setUpStaticServer = function setUpStaticServer(app) {
   fs.ensureDirSync(webRootPath);
   fs.ensureDirSync(thumbnailDirPath);
   fs.ensureDirSync(imagePreviewPath);
-  app.use('/app', serveStatic(webRootPath));
+  app.use('/', serveStatic(webRootPath));
   app.use('/thumbnail', serveStatic(thumbnailDirPath));
   app.use('/preview', serveStatic(imagePreviewPath));
   return app;

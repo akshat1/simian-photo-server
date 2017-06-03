@@ -1,6 +1,16 @@
-html, body {
-  font-family: sans-serif;
-  font-size: 18px;
-}
+@space-s: 10px;
+@space-m: 20px;
+@space-l: 40px;
 
+@import 'mixins.less';
+@import 'colors.less';
 @import 'layout.less';
+
+// Widgets (general purpose components)
+@import 'bar.less';
+@import 'thumbnail.less';
+
+// Specific components
+@import 'group-list.less';
+@import 'picture-list.less';
+@import 'picture.less';

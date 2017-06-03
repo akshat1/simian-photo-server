@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Thumbnail from './Thumbnail.jsx'
 import { connect } from 'react-redux';
 
 class GroupThumbnail extends React.Component {
@@ -13,11 +13,7 @@ class GroupThumbnail extends React.Component {
       _id: id
     } = this.props;
 
-    return (
-      <div className='sps-group-thumbnail'>
-        <Link to={`group/${id}`}>{name}</Link>
-      </div>
-    );
+    return <Thumbnail label={name} linkTarget={`group/${id}`}/>;
   }
 }
 

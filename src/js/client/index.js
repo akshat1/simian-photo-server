@@ -1,16 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import store from './store';
 import Home from './components/Home.jsx'
 
 function startApp() {
   render(
     (<Provider store={store()}>
-      <BrowserRouter basename='/app'>
+      <HashRouter basename='/'>
         <Home />
-      </BrowserRouter>
+      </HashRouter>
     </Provider>),
     document.getElementById('spsRoot')
   );

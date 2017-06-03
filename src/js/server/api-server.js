@@ -96,7 +96,7 @@ const ApiServer = module.exports = {
 
 
   getPicture: function getPicture(request, response) {
-    logger.info('ApiServer.getPictures - ', request.query);
+    logger.info('ApiServer.getPictures - ', request.params.pictureId);
     const pictureId = request.params.pictureId;
     if (typeof pictureId === 'undefined') {
       const err = new Error('Missing required param pictureId');
@@ -113,6 +113,27 @@ const ApiServer = module.exports = {
     return ApiServer.sendResponse(
       response,
       picture
+    );
+  },
+
+  getGroup: function getGroup(request, response) {
+    logger.info('apiServer.getGroup - ', request.params.groupId);
+    const groupId = request.params.groupId;
+    if (typeof groupId === 'undefined') {
+      const err = new Error('Missing required param groupId');
+      err.status = 428;
+      return ApiServer.sendResponse(response, Promise.reject(err));
+    }
+
+    const group = Crud
+      .getGroups({_id: ObjectID(groupId)})
+      .then(function(groups) {
+        return groups[0];
+      });
+
+    return ApiServer.sendResponse(
+      response,
+      group
     );
   },
 
@@ -139,6 +160,7 @@ const ApiServer = module.exports = {
 
   setUpGroups: function setUpGroups(router) {
     router.use('/groups', ApiServer.getGroups);
+    router.use('/group/:groupId', ApiServer.getGroup);
     router.use('/group-contents/:groupId', ApiServer.getPicturesInGroup);
   },
 

@@ -1,5 +1,9 @@
 import React from 'react';
 
-const Spinner = () => <div className='sps-spinner'>Loading...</div>
+const Spinner = () =>
+  (
+    <div className='sps-spinner'>
+    </div>
+  )
 
 export default Spinner

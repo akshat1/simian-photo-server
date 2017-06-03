@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchPictures } from '../actions';
+import { setActiveGroup } from '../actions';
 import PictureThumbnail from './PictureThumbnail.jsx';
 
 class PictureList extends React.Component {
@@ -8,9 +8,7 @@ class PictureList extends React.Component {
     console.log('bloop');
     const {groupId} = this.props.match && this.props.match.params
     if (groupId) {
-      this.props.fetchPictures({
-        groupId: groupId
-      });
+      this.props.setActiveGroup(groupId);
     } else {
       console.error('No groupId');
     }
@@ -32,7 +30,7 @@ function mapStateToProps({pictures}) {
 }
 
 const mapDispatchToProps = {
-  fetchPictures
+  setActiveGroup
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PictureList);
